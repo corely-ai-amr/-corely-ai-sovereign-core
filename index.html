@@ -33,7 +33,7 @@
                     <input type="password" id="password" required class="w-full bg-gray-950 cyber-border rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition" placeholder="••••••••">
                 </div>
                 <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition glow-effect mt-2">
-                    تفعيل الجلسة والخول
+                    تفعيل الجلسة والدخول
                 </button>
             </form>
         </div>
@@ -57,14 +57,14 @@
             <div class="flex items-start space-x-3 space-x-reverse">
                 <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-xs shrink-0 glow-effect">AMI</div>
                 <div class="bg-gray-900 cyber-border p-4 rounded-2xl max-w-xl text-sm text-gray-200">
-                    أهلاً بك يا فنان في النظام السيادي الخارق. تم تأمين الجلسة بنجاح، كيف يمكنني مساعدتك في الارتقاء بمشروعك اليوم؟
+                    أهلاً بك يا فنان في النظام السيادي الخارق. تم ربط العقل الاصطناعي بنجاح، كيف يمكنني مساعدتك اليوم؟
                 </div>
             </div>
         </div>
 
         <!-- إدخال الأوامر -->
         <div class="mt-4 bg-gray-900 cyber-border rounded-2xl p-2 flex items-center glow-effect">
-            <input type="text" id="user-input" class="flex-1 bg-transparent px-4 py-2 text-white focus:outline-none text-sm" placeholder="أدخل أمرك السيادي هنا...">
+            <input type="text" id="user-input" class="flex-1 bg-transparent px-4 py-2 text-white focus:outline-none text-sm" placeholder="أدخل أمرك السيادي هنا..." onkeypress="handleKeyPress(event)">
             <button onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-xl font-bold transition text-sm">
                 إرسال
             </button>
@@ -77,45 +77,96 @@
     </footer>
 
     <script>
+        let currentUserId = "amr-sovereign-user";
+
         function handleLogin(event) {
             event.preventDefault();
             const username = document.getElementById('username').value;
             if(username) {
+                currentUserId = username;
                 document.getElementById('auth-screen').style.display = 'none';
                 document.getElementById('user-badge').innerText = `المستخدم: ${username}`;
             }
         }
 
-        function sendMessage() {
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
             const input = document.getElementById('user-input');
             const container = document.getElementById('chat-container');
-            if(!input.value.trim()) return;
+            const userText = input.value.trim();
+            if(!userText) return;
 
-            // رسالة المستخدم
+            // عرض رسالة المستخدم في الواجهة
             container.innerHTML += `
                 <div class="flex items-start justify-end space-x-3 space-x-reverse">
                     <div class="bg-gray-800 border border-gray-700 p-4 rounded-2xl max-w-xl text-sm text-gray-200">
-                        ${input.value}
+                        ${userText}
                     </div>
                 </div>
             `;
             
-            const userText = input.value;
             input.value = '';
             container.scrollTop = container.scrollHeight;
 
-            // محاكاة رد الذكاء الاصطناعي السيادي الفخم
-            setTimeout(() => {
+            // إضافة عنصر مؤقت للرد (جاري التفكير...)
+            const loadingId = 'loading-' + Date.now();
+            container.innerHTML += `
+                <div id="${loadingId}" class="flex items-start space-x-3 space-x-reverse">
+                    <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-xs shrink-0 glow-effect">AMI</div>
+                    <div class="bg-gray-900 cyber-border p-4 rounded-2xl max-w-xl text-sm text-gray-400 animate-pulse">
+                        جاري معالجة الأمر السيادي عبر عقل AMI AI...
+                    </div>
+                </div>
+            `;
+            container.scrollTop = container.scrollHeight;
+
+            try {
+                // الاتصال بـ Dify API الحقيقي
+                const response = await fetch('https://api.dify.ai/v1/chat-messages', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer app-sECdyceP1zizS7oBvmPOtzhl',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        inputs: {},
+                        query: userText,
+                        response_mode: "blocking",
+                        user: currentUserId
+                    })
+                });
+
+                const data = await response.json();
+                document.getElementById(loadingId).remove();
+
+                const aiReply = data.answer || "عذراً، حدث استجابة غير متوقعة من السيرفر السيادي.";
+
+                // عرض رد الذكاء الاصطناعي الحقيقي
                 container.innerHTML += `
                     <div class="flex items-start space-x-3 space-x-reverse">
                         <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-xs shrink-0 glow-effect">AMI</div>
-                        <div class="bg-gray-900 cyber-border p-4 rounded-2xl max-w-xl text-sm text-gray-200">
-                            جاري معالجة أمرك السيادي بدقة فائقة: "${userText}"... النظام يعمل بكفاءة تامة لجعل مشروعك ينافس عالمياً!
+                        <div class="bg-gray-900 cyber-border p-4 rounded-2xl max-w-xl text-sm text-gray-200 leading-relaxed">
+                            ${aiReply}
                         </div>
                     </div>
                 `;
-                container.scrollTop = container.scrollHeight;
-            }, 1000);
+            } catch (error) {
+                document.getElementById(loadingId).remove();
+                container.innerHTML += `
+                    <div class="flex items-start space-x-3 space-x-reverse">
+                        <div class="bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-xs shrink-0">ERR</div>
+                        <div class="bg-gray-900 border border-red-800 p-4 rounded-2xl max-w-xl text-sm text-red-300">
+                            فشل الاتصال بالخادم السيادي. تحقق من الشبكة أو صلاحيات المفتاح.
+                        </div>
+                    </div>
+                `;
+            }
+            container.scrollTop = container.scrollHeight;
         }
     </script>
 </body>

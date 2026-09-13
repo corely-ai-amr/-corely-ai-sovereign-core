@@ -155,10 +155,10 @@
 </body>
 </html>
 <script>
-  // دي الدالة اللي هتاخد الأمر وتبعت لـ Dify
+  // الدالة الأساسية لإرسال الأمر لـ Dify واستقبال الرد الحقيقي
   async function executeCosmicCommand(userCommand) {
       try {
-          const response = aicall = await fetch('https://api.dify.ai/v1/chat-messages', {
+          const response = await fetch('https://api.dify.ai/v1/chat-messages', {
               method: 'POST',
               headers: {
                   'Authorization': 'Bearer app-sECdyceP1zizS7oBvmPOtzhl',
@@ -173,17 +173,33 @@
           });
 
           const data = await response.json();
-          const realAnswer = data.answer || "تم التنفيذ.";
+          const realAnswer = data.answer || "تم التنفيذ بنجاح.";
           
-          // هنا بتعرض الرد الحقيقي في المكان المخصص للنتائج عندك في الواجهة
+          // عرض الرد الحقيقي الناتج من Dify
           console.log(realAnswer);
-          alert(realAnswer); // مؤقتاً عشان تشوف الرد طالع قدامك
+          alert(realAnswer); // هيظهر لك رسالة بالرد الحقيقي على الشاشة
 
       } catch (error) {
           console.error("خطأ في الاتصال:", error);
+          alert("حدث خطأ في الاتصال بالخلفية السيادية.");
       }
   }
 
-  // اربط الكود ده بزرار "إطلاق الأمر الكوني" عندك
-  // (بدل ما تستدعي الرد الوهمي القديم، استدعي دالة executeCosmicCommand واديها النص المكتوب)
+  // ربط زر "إطلاق الأمر الكوني" ومربع الإدخال تلقائياً
+  document.addEventListener("DOMContentLoaded", function() {
+      // حاول تعدل الأسماء دي لو الـ IDs في كودك مختلفة
+      const executeBtn = document.querySelector("#execute-btn") || document.querySelector("button"); 
+      const commandInput = document.querySelector("#command-input") || document.querySelector("input");
+
+      if (executeBtn && commandInput) {
+          executeBtn.addEventListener("click", function() {
+              const userText = commandInput.value.trim();
+              if (userText) {
+                  executeCosmicCommand(userText);
+              } else {
+                  alert("من فضلك اكتب أمراً أولاً يا فنان!");
+              }
+          });
+      }
+  });
 </script>

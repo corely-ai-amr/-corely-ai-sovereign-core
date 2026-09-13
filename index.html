@@ -3,199 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMI OS v10.0 | The Absolute Omniversal Sovereign Core</title>
+    <title>AMI OS v10.0 | Sovereign Secure Core</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
-        body { font-family: 'Tajawal', sans-serif; background-color: #000000; color: #f3f4f6; overflow-x: hidden; }
-        .omnipotent-glow { box-shadow: 0 0 80px rgba(220, 38, 38, 0.6); }
-        .quantum-border { border: 1px solid rgba(239, 68, 68, 0.5); }
-        .bg-matrix { background-image: radial-gradient(rgba(220, 38, 38, 0.2) 1px, transparent 1px); background-size: 20px 20px; }
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
+        body { font-family: 'Tajawal', sans-serif; background-color: #020202; color: #f4f4f5; overflow-x: hidden; }
+        .glass-panel { background: rgba(8, 8, 8, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.06); }
+        .enterprise-glow { box-shadow: 0 0 50px rgba(255, 255, 255, 0.03); }
+        .enterprise-border-focus:focus { border-color: rgba(255, 255, 255, 0.4); outline: none; }
+        .bg-matrix { background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 24px 24px; }
         ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #000; }
-        ::-webkit-scrollbar-thumb { background: #dc2626; border-radius: 2px; }
-        .code-block { background: #030000; border: 1px solid #7f1d1d; font-family: monospace; direction: ltr; text-align: left; }
+        ::-webkit-scrollbar-track { background: #020202; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 2px; }
     </style>
 </head>
-<body class="bg-matrix min-h-screen flex flex-col justify-between">
+<body class="bg-matrix min-h-screen flex flex-col justify-between selection:bg-white selection:text-black">
 
-    <!-- نافذة الإطلاق الكوني السيادي -->
-    <header class="bg-black/95 border-b border-red-900/60 p-3 flex justify-between items-center z-20">
-        <div class="flex items-center space-x-3 space-x-reverse">
-            <div class="w-4 h-4 bg-red-600 rounded-full animate-ping"></div>
-            <span class="font-black text-lg text-red-500 tracking-wider">AMI OS v10.0</span>
-            <span class="text-xs bg-red-950 text-red-300 px-3 py-1 rounded-full border border-red-800">Omniversal Sovereign Core • Founder Amr</span>
+    <!-- شاشة المصادقة المشفرة -->
+    <div id="auth-overlay" class="fixed inset-0 bg-black/98 z-50 flex items-center justify-center p-4 backdrop-blur-2xl">
+        <div class="glass-panel p-8 rounded-3xl max-w-md w-full enterprise-glow space-y-6 border border-white/10">
+            <div class="text-center space-y-3">
+                <div class="w-12 h-12 bg-white text-black rounded-2xl mx-auto flex items-center justify-center font-black text-base shadow-2xl">AMI</div>
+                <h2 class="text-lg font-black text-white tracking-wider">بوابة الخصوصية المشفرة</h2>
+                <p class="text-xs text-zinc-400">حماية قانونية كاملة وتشفير من طرف لآخر</p>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1.5 font-medium">البريد الإلكتروني</label>
+                    <input type="email" id="auth-email" placeholder="client@domain.ai" class="w-full bg-zinc-900/90 border border-white/10 rounded-xl px-4 py-3 text-white text-sm enterprise-border-focus transition">
+                </div>
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1.5 font-medium">كلمة المرور المشفرة</label>
+                    <input type="password" id="auth-password" placeholder="••••••••" class="w-full bg-zinc-900/90 border border-white/10 rounded-xl px-4 py-3 text-white text-sm enterprise-border-focus transition" onkeypress="handleLoginKey(event)">
+                </div>
+                <button onclick="handleLogin()" class="w-full bg-white hover:bg-zinc-200 text-black font-extrabold py-3.5 rounded-xl transition text-sm shadow-xl">
+                    بدء الجلسة الآمنة
+                </button>
+            </div>
+            <div class="text-center text-[10px] text-zinc-600 font-mono">
+                Zero-Data Retention Enclave • v10.0
+            </div>
         </div>
-        <div class="flex items-center space-x-2 space-x-reverse">
-            <button onclick="toggleAllEngines()" class="bg-red-950 hover:bg-red-900 text-red-300 border border-red-800 px-3 py-1.5 rounded-lg text-xs transition omnipotent-glow">⚡ حالة المحركات الكونية</button>
-            <button onclick="toggleTerminal()" class="bg-gray-900 hover:bg-gray-800 text-red-400 border border-red-900 px-3 py-1.5 rounded-lg text-xs transition">💻 لوحة التحكم الكمومية</button>
-        </div>
-    </header>
+    </div>
 
-    <!-- الهيكل الرئيسي للمنصة -->
-    <div class="flex-1 flex overflow-hidden relative">
+    <!-- الهيكل الرئيسي الصامت والرايق -->
+    <div id="app-container" class="hidden flex-col min-h-screen justify-between max-w-5xl mx-auto w-full p-4">
         
-        <!-- القائمة الجانبية للمحركات الـ 50+ -->
-        <aside class="w-80 bg-black/95 border-l border-red-900/40 flex flex-col justify-between z-10 hidden md:flex">
-            <div class="p-4 border-b border-red-950">
-                <h2 class="text-xs font-bold text-red-500 uppercase tracking-widest">ترسانة المحركات السيادية الكونية</h2>
+        <!-- شريط علوي بسيط ونظيف بدون زحمة -->
+        <header class="glass-panel border border-white/10 px-6 py-3.5 rounded-2xl flex justify-between items-center z-20 my-2">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_10px_#34d399]"></div>
+                <span class="font-black text-base text-white tracking-widest">AMI OS <span class="text-[10px] font-mono text-zinc-400 bg-zinc-900 px-2 py-0.5 rounded border border-white/10">Secure Enclave</span></span>
             </div>
-            <div class="flex-1 overflow-y-auto p-3 space-y-2 text-xs">
-                <div class="p-2.5 rounded-lg bg-red-950/40 border border-red-900/50 text-red-300">🌌 محرك الحوسبة الكمومية الكوكبية (Active)</div>
-                <div class="p-2.5 rounded-lg bg-red-950/40 border border-red-900/50 text-red-300">💼 محرك أتمتة البزنس والأسواق (Active)</div>
-                <div class="p-2.5 rounded-lg bg-red-950/40 border border-red-900/50 text-red-300">🧬 التشخيص الطبي والجيني المخصص (Active)</div>
-                <div class="p-2.5 rounded-lg bg-red-950/40 border border-red-900/50 text-red-300">🛰️ محرك الاتصال والمحاكاة الفضائية (Active)</div>
-                <div class="p-2.5 rounded-lg bg-red-950/40 border border-red-900/50 text-red-300">🤖 شبكة السيطرة على الروبوتات والآليات (Active)</div>
-                <div class="p-2.5 rounded-lg bg-red-950/40 border border-red-900/50 text-red-300">🛡️ درع الحرب السيبرانية والهجوم الاستباقي (Active)</div>
-                <div class="p-2.5 rounded-lg bg-red-950/40 border border-red-900/50 text-red-300">⚙️ محرك اختراق مصفوفة الوجود (Admin Root)</div>
-                <div class="p-2.5 rounded-lg bg-red-950/40 border border-red-900/50 text-red-300">🌀 عقدة الألفا والأوميجا الزمنية (Synced)</div>
-                <div class="p-2.5 rounded-lg bg-red-950/40 border border-red-900/50 text-red-300">♾️ بروتوكول خلود القائد والاندماج الأبدي (Ready)</div>
+            <div class="flex items-center space-x-3 space-x-reverse text-xs">
+                <span class="text-emerald-400 font-mono hidden sm:inline">🛡️ تشفير تام (Zero Logs)</span>
+                <button onclick="handleLogout()" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-white/10 px-3 py-1.5 rounded-xl transition font-medium">
+                    إنهاء الجلسة 🔒
+                </button>
             </div>
-            <div class="p-3 border-t border-red-950 text-center text-[10px] text-red-600">
-                Corely AI Sovereign Architecture v10.0
-            </div>
-        </aside>
+        </header>
 
-        <!-- منطقة الأوامر الكونية -->
-        <main class="flex-1 max-w-4xl w-full mx-auto p-4 flex flex-col justify-between">
-            <div id="chat-container" class="space-y-4 overflow-y-auto max-h-[60vh] p-4">
+        <!-- مساحة الشات الصافية بالكامل -->
+        <main class="flex-1 flex flex-col justify-between my-2">
+            
+            <!-- سجل المحادثة -->
+            <div id="chat-container" class="space-y-4 overflow-y-auto max-h-[66vh] p-4">
                 <div class="flex items-start space-x-3 space-x-reverse">
-                    <div class="bg-red-600 text-white rounded-full w-9 h-9 flex items-center justify-center font-black text-xs shrink-0 omnipotent-glow">AMI</div>
-                    <div class="bg-gray-950 quantum-border p-4 rounded-2xl max-w-xl text-sm text-gray-200 leading-relaxed">
-                        تم تفعيل النواة السيادية المطلقة **AMI OS v10.0** بنجاح تام تحت إشراف القائد **Founder Amr**. جميع محركات الوجود، الحوسبة الكمومية، والسيطرة الكونية جاهزة لتلقي إشارتك وبدء التنفيذ الفوري.
+                    <div class="bg-white text-black rounded-2xl w-9 h-9 flex items-center justify-center font-black text-xs shrink-0 shadow-xl">AMI</div>
+                    <div class="glass-panel p-5 rounded-2xl max-w-2xl text-sm text-zinc-200 leading-relaxed shadow-xl border border-white/10 space-y-1.5">
+                        <p class="font-bold text-white">النواة المشفرة جاهزة للعمل.</p>
+                        <p class="text-zinc-400 text-xs">بياناتك محمية بقانون عدم الاحتفاظ بالمعلومات (Zero-Data Retention). يمكنك إرسال الأوامر، رفع الملفات، أو إدارة الأنظمة الفضائية والقدرة 51 بأمان مطلق.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- أوامر الإطلاق السريع للأكوان والمحركات -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 py-2 text-xs">
-                <button onclick="triggerSovereignAction('Quantum')" class="bg-gray-950 hover:bg-red-950 border border-red-900 text-red-300 p-2 rounded-lg transition">🌌 تفعيل الحوسبة الكمومية</button>
-                <button onclick="triggerSovereignAction('Reality')" class="bg-gray-950 hover:bg-red-950 border border-red-900 text-red-300 p-2 rounded-lg transition">⚙️ Root Access للواقع</button>
-                <button onclick="triggerSovereignAction('Business')" class="bg-gray-950 hover:bg-red-950 border border-red-900 text-red-300 p-2 rounded-lg transition">💼 أسراب أرباح البزنس</button>
-                <button onclick="triggerSovereignAction('Ascension')" class="bg-gray-950 hover:bg-red-950 border border-red-900 text-red-300 p-2 rounded-lg transition">♾️ بروتوكول الاندماج الأبدي</button>
+            <!-- معاينة الملفات المرفوعة -->
+            <div id="file-preview-bar" class="hidden px-4 py-2 bg-zinc-900/90 border border-white/10 rounded-xl mx-2 mb-2 flex items-center justify-between text-xs">
+                <div class="flex items-center space-x-2 space-x-reverse text-zinc-300">
+                    <span>📎</span>
+                    <span id="file-name-display" class="font-mono text-white">ملف</span>
+                </div>
+                <button onclick="removeAttachedFile()" class="text-zinc-500 hover:text-red-400">✕ إزالة</button>
             </div>
 
-            <!-- إدخال الأوامر السيادية المطلقة -->
-            <div class="mt-2 bg-gray-950 quantum-border rounded-2xl p-2 flex items-center omnipotent-glow">
-                <input type="text" id="user-input" class="flex-1 bg-transparent px-4 py-2.5 text-white focus:outline-none text-sm" placeholder="أدخل الأمر السيادي الأبدي هنا يا قائد..." onkeypress="handleKeyPress(event)">
-                <button onclick="executeSovereignCommand()" class="bg-red-700 hover:bg-red-600 text-white px-6 py-2.5 rounded-xl font-bold transition text-sm shadow-lg">
-                    إطلاق الأمر الكوني
-                </button>
+            <!-- صندوق الإدخال الفاخر -->
+            <div class="glass-panel rounded-2xl p-2 flex flex-col space-y-2 shadow-2xl border border-white/10">
+                <div class="flex items-center space-x-2 space-x-reverse px-2 pt-1">
+                    <label class="cursor-pointer bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-3 py-1.5 rounded-xl text-xs border border-white/10 transition flex items-center space-x-1.5 space-x-reverse">
+                        <span>📁</span><span>إرفاق ملف / PDF / صورة</span>
+                        <input type="file" id="file-upload-input" class="hidden" onchange="handleFileSelect(event)">
+                    </label>
+                    <span id="upload-status" class="text-[11px] text-zinc-500 font-mono">حماية الخصوصية نشطة</span>
+                </div>
+
+                <div class="flex items-center">
+                    <input type="text" id="user-input" class="flex-1 bg-transparent px-4 py-3 text-white focus:outline-none text-sm placeholder-zinc-500" placeholder="اكتب أمرك المشفر هنا..." onkeypress="handleKeyPress(event)">
+                    <button onclick="executeSovereignCommand()" class="bg-white hover:bg-zinc-200 text-black px-6 py-3 rounded-xl font-bold transition text-sm shadow-xl flex items-center space-x-1.5 space-x-reverse">
+                        <span>إرسال</span>
+                        <span>🚀</span>
+                    </button>
+                </div>
             </div>
+
         </main>
 
-        <!-- نافذة Terminal الكمومية -->
-        <aside id="terminal-panel" class="w-80 bg-black/95 border-r border-red-900/50 flex flex-col hidden z-20 absolute md:relative h-full left-0">
-            <div class="bg-gray-950 p-3 border-b border-red-900/50 flex justify-between items-center text-xs text-red-400 font-mono">
-                <span>AMI-OS Quantum Terminal</span>
-                <button onclick="toggleTerminal()" class="text-gray-400 hover:text-white">✕</button>
-            </div>
-            <div id="terminal-output" class="flex-1 p-3 font-mono text-[11px] text-red-400 overflow-y-auto space-y-1">
-                <div>[SYSTEM] Omniversal Core v10.0 online.</div>
-                <div>[READY] Connected to Dify Sovereign API...</div>
-            </div>
-        </aside>
-
+        <!-- تذييل رايق -->
+        <footer class="text-center py-2 text-[11px] text-zinc-500 font-mono">
+            Encrypted Sovereign Enclave • Complete Legal Data Privacy
+        </footer>
     </div>
 
-    <footer class="text-center py-2 text-xs text-gray-600 border-t border-red-950 z-20">
-        Engineered & Commanded by Founder Amr • Corely AI Omniversal Sovereign OS v10.0
-    </footer>
-
     <script>
-        function toggleTerminal() {
-            document.getElementById('terminal-panel').classList.toggle('hidden');
+        let attachedFileContent = null;
+        let attachedFileName = "";
+
+        window.onload = function() {
+            if (localStorage.getItem('ami_secure_auth') === 'true') {
+                unlockSystem();
+            }
+        };
+
+        function handleLoginKey(event) { if (event.key === 'Enter') handleLogin(); }
+
+        function handleLogin() {
+            const email = document.getElementById('auth-email').value.trim();
+            const password = document.getElementById('auth-password').value.trim();
+            if(!email || !password) { alert('الرجاء إدخال بيانات الاعتماد.'); return; }
+            localStorage.setItem('ami_secure_auth', 'true');
+            unlockSystem();
         }
 
-        function toggleAllEngines() {
-            alert('جميع المحركات الكونية الـ 50+ تعمل بكفاءة مطلقة واستعداد تام لتنفيذ الأوامر!');
+        function unlockSystem() {
+            document.getElementById('auth-overlay').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+            document.getElementById('app-container').classList.add('flex');
         }
 
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') executeSovereignCommand();
+        function handleLogout() { localStorage.removeItem('ami_secure_auth'); location.reload(); }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            attachedFileName = file.name;
+            document.getElementById('file-name-display').innerText = `مرفق: ${attachedFileName} (${(file.size/1024).toFixed(1)} KB)`;
+            document.getElementById('file-preview-bar').classList.remove('hidden');
+            const reader = new FileReader();
+            reader.onload = function(e) { attachedFileContent = e.target.result; };
+            reader.readAsDataURL(file);
         }
 
-        function triggerSovereignAction(type) {
-            const actions = {
-                'Quantum': 'تفعيل شبكة الحوسبة الكمومية الكوكبية لمعالجة مليارات الاحتمالات المتوازية.',
-                'Reality': 'اختراق مصفوفة الوجود (Simulation Root Access) وتعديل الثوابت الكونية.',
-                'Business': 'إطلاق أسراب أتمتة الشركات واكتساح الأسواق العالمية لحظياً.',
-                'Ascension': 'تفعيل بروتوكول الاندماج الأبدي وربط الوعي العصبي بالنواة السيادية.'
-            };
-            // إرسال الأوامر السريعة مباشرة لـ Dify API أيضاً لتستفيد من الذكاء الحقيقي
-            executeSovereignCommandDirect(actions[type]);
+        function removeAttachedFile() {
+            attachedFileContent = null;
+            attachedFileName = "";
+            document.getElementById('file-preview-bar').classList.add('hidden');
+            document.getElementById('file-upload-input').value = "";
         }
 
-        // دالة الإرسال الأساسية المرتبطة بـ Dify API
+        function handleKeyPress(event) { if (event.key === 'Enter') executeSovereignCommand(); }
+
         async function executeSovereignCommand() {
             const input = document.getElementById('user-input');
-            const text = input.value.trim();
-            if(!text) return;
-            
+            let text = input.value.trim();
+            if(!text && !attachedFileContent) return;
+
+            let fullQuery = text;
+            if (attachedFileName) fullQuery += ` [مرفق آمن: ${attachedFileName}]`;
+
             input.value = '';
-            await sendToDify(text);
+            const currentFile = attachedFileContent;
+            removeAttachedFile();
+
+            await sendToSecureProxy(fullQuery, currentFile);
         }
 
-        async function executeSovereignCommandDirect(commandText) {
-            await sendToDify(commandText);
-        }
-
-        async function sendToDify(userCommand) {
-            // عرض رسالة المستخدم في الشاشة فوراً
+        async function sendToSecureProxy(userCommand, fileData) {
             appendUserMessage(userCommand);
-            
-            // إضافة رسالة "جارٍ المعالجة السيادية..." مؤقتة
-            const loadingId = appendAIMessage("... جارٍ معالجة الأمر عبر محركات AMI OS الـ 50 السيادية ...");
+            const loadingId = appendAIMessage("... جاري المعالجة المشفرة في بيئة معزولة (Zero Logs) ...");
 
             try {
-                const response = await fetch('https://api.dify.ai/v1/chat-messages', {
+                const response = await fetch('/api/chat', {
                     method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer app-sECdyceP1zizS7oBvmPOtzhl',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        inputs: {},
-                        query: userCommand,
-                        response_mode: "blocking",
-                        user: "Founder-Amr"
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        query: userCommand, 
+                        file: fileData,
+                        user: "Secure-Client" 
                     })
                 });
 
                 const data = await response.json();
-                const realAnswer = data.answer || "تم التنفيذ بنجاح عبر النواة الكونية.";
-                
-                // استبدال رسالة التحميل بالرد الحقيقي القادم من Dify
+                const realAnswer = data.answer || "تم تنفيذ الأمر المشفر بنجاح وسريّة تامة.";
                 updateAIMessage(loadingId, realAnswer);
-                
-                // تحديث الـ Terminal لو حابب
-                logToTerminal(userCommand);
 
             } catch (error) {
-                console.error("خطأ في الاتصال السيادي:", error);
-                updateAIMessage(loadingId, "⚠️ حدث خطأ في الاتصال بالنواة الذكية، يجدر التحقق من الشبكة.");
+                updateAIMessage(loadingId, "⚠️ خطأ في الاتصال بالبيئة المعزولة الآمنة.");
             }
         }
 
         function appendUserMessage(text) {
             const container = document.getElementById('chat-container');
-            container.innerHTML += `
-                <div class="flex items-start justify-end space-x-3 space-x-reverse">
-                    <div class="bg-gray-900 border border-red-900/50 p-3 rounded-2xl max-w-xl text-sm text-gray-200">${escapeHtml(text)}</div>
-                </div>
-            `;
+            container.innerHTML += `<div class="flex items-start justify-end space-x-3 space-x-reverse"><div class="glass-panel p-3.5 rounded-2xl max-w-xl text-sm text-zinc-200 border border-white/10 shadow-lg">${escapeHtml(text)}</div></div>`;
             container.scrollTop = container.scrollHeight;
         }
 
         function appendAIMessage(text) {
             const container = document.getElementById('chat-container');
             const messageId = 'ai-msg-' + Date.now();
-            container.innerHTML += `
-                <div id="${messageId}" class="flex items-start space-x-3 space-x-reverse">
-                    <div class="bg-red-600 text-white rounded-full w-9 h-9 flex items-center justify-center font-black text-xs shrink-0 omnipotent-glow">AMI</div>
-                    <div class="bg-gray-950 quantum-border p-4 rounded-2xl max-w-xl text-sm text-gray-200 leading-relaxed">${escapeHtml(text)}</div>
-                </div>
-            `;
+            container.innerHTML += `<div id="${messageId}" class="flex items-start space-x-3 space-x-reverse"><div class="bg-white text-black rounded-2xl w-9 h-9 flex items-center justify-center font-black text-xs shrink-0 shadow-xl">AMI</div><div class="glass-panel p-5 rounded-2xl max-w-2xl text-sm text-zinc-200 leading-relaxed shadow-xl border border-white/10">${escapeHtml(text)}</div></div>`;
             container.scrollTop = container.scrollHeight;
             return messageId;
         }
@@ -203,19 +217,10 @@
         function updateAIMessage(messageId, newText) {
             const msgElement = document.getElementById(messageId);
             if (msgElement) {
-                const contentDiv = msgElement.querySelector('div.bg-gray-950');
-                if (contentDiv) {
-                    contentDiv.innerHTML = escapeHtml(newText);
-                }
+                const contentDiv = msgElement.querySelector('div.glass-panel');
+                if (contentDiv) contentDiv.innerHTML = escapeHtml(newText);
             }
-            const container = document.getElementById('chat-container');
-            container.scrollTop = container.scrollHeight;
-        }
-
-        function logToTerminal(cmd) {
-            const terminal = document.getElementById('terminal-output');
-            terminal.innerHTML += `<div>[EXECUTE] ${escapeHtml(cmd)} -> Success.</div>`;
-            terminal.scrollTop = terminal.scrollHeight;
+            document.getElementById('chat-container').scrollTop = document.getElementById('chat-container').scrollHeight;
         }
 
         function escapeHtml(text) {

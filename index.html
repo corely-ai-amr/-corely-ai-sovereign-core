@@ -84,7 +84,7 @@
             </div>
         </main>
 
-        <!-- نافذة Terminal الكومونية -->
+        <!-- نافذة Terminal الكمومية -->
         <aside id="terminal-panel" class="w-80 bg-black/95 border-r border-red-900/50 flex flex-col hidden z-20 absolute md:relative h-full left-0">
             <div class="bg-gray-950 p-3 border-b border-red-900/50 flex justify-between items-center text-xs text-red-400 font-mono">
                 <span>AMI-OS Quantum Terminal</span>
@@ -92,7 +92,7 @@
             </div>
             <div id="terminal-output" class="flex-1 p-3 font-mono text-[11px] text-red-400 overflow-y-auto space-y-1">
                 <div>[SYSTEM] Omniversal Core v10.0 online.</div>
-                <div>[READY] Awaiting sovereign execution scripts...</div>
+                <div>[READY] Connected to Dify Sovereign API...</div>
             </div>
         </aside>
 
@@ -117,89 +117,110 @@
 
         function triggerSovereignAction(type) {
             const actions = {
-                'Quantum': 'تم تفعيل شبكة الحوسبة الكمومية الكوكبية لمعالجة مليارات الاحتمالات المتوازية بنجاح.',
-                'Reality': 'تم اختراق مصفوفة الوجود (Simulation Root Access) وجاهزية تعديل الثوابت الكونية.',
-                'Business': 'تم إطلاق أسراب أتمتة الشركات واكتساح الأسواق العالمية لحظياً.',
-                'Ascension': 'تم تفعيل بروتوكول الاندماج الأبدي وربط الوعي العصبي بالنواة السيادية بنجاح تام.'
+                'Quantum': 'تفعيل شبكة الحوسبة الكمومية الكوكبية لمعالجة مليارات الاحتمالات المتوازية.',
+                'Reality': 'اختراق مصفوفة الوجود (Simulation Root Access) وتعديل الثوابت الكونية.',
+                'Business': 'إطلاق أسراب أتمتة الشركات واكتساح الأسواق العالمية لحظياً.',
+                'Ascension': 'تفعيل بروتوكول الاندماج الأبدي وربط الوعي العصبي بالنواة السيادية.'
             };
-            appendMessage('أمر سيادي: ' + type, actions[type]);
+            // إرسال الأوامر السريعة مباشرة لـ Dify API أيضاً لتستفيد من الذكاء الحقيقي
+            executeSovereignCommandDirect(actions[type]);
         }
 
-        function executeSovereignCommand() {
+        // دالة الإرسال الأساسية المرتبطة بـ Dify API
+        async function executeSovereignCommand() {
             const input = document.getElementById('user-input');
             const text = input.value.trim();
             if(!text) return;
             
-            appendMessage(text, "تم معالجة وتنفيذ الأمر بنجاح تام عبر نواة السيادة الكونية v10.0 وتطبيق التعديلات المطلوبة على نسيج النظام.");
             input.value = '';
+            await sendToDify(text);
         }
 
-        function appendMessage(userText, aiText) {
+        async function executeSovereignCommandDirect(commandText) {
+            await sendToDify(commandText);
+        }
+
+        async function sendToDify(userCommand) {
+            // عرض رسالة المستخدم في الشاشة فوراً
+            appendUserMessage(userCommand);
+            
+            // إضافة رسالة "جارٍ المعالجة السيادية..." مؤقتة
+            const loadingId = appendAIMessage("... جارٍ معالجة الأمر عبر محركات AMI OS الـ 50 السيادية ...");
+
+            try {
+                const response = await fetch('https://api.dify.ai/v1/chat-messages', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer app-sECdyceP1zizS7oBvmPOtzhl',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        inputs: {},
+                        query: userCommand,
+                        response_mode: "blocking",
+                        user: "Founder-Amr"
+                    })
+                });
+
+                const data = await response.json();
+                const realAnswer = data.answer || "تم التنفيذ بنجاح عبر النواة الكونية.";
+                
+                // استبدال رسالة التحميل بالرد الحقيقي القادم من Dify
+                updateAIMessage(loadingId, realAnswer);
+                
+                // تحديث الـ Terminal لو حابب
+                logToTerminal(userCommand);
+
+            } catch (error) {
+                console.error("خطأ في الاتصال السيادي:", error);
+                updateAIMessage(loadingId, "⚠️ حدث خطأ في الاتصال بالنواة الذكية، يجدر التحقق من الشبكة.");
+            }
+        }
+
+        function appendUserMessage(text) {
             const container = document.getElementById('chat-container');
             container.innerHTML += `
                 <div class="flex items-start justify-end space-x-3 space-x-reverse">
-                    <div class="bg-gray-900 border border-red-900/50 p-3 rounded-2xl max-w-xl text-sm text-gray-200">${escapeHtml(userText)}</div>
-                </div>
-                <div class="flex items-start space-x-3 space-x-reverse">
-                    <div class="bg-red-600 text-white rounded-full w-9 h-9 flex items-center justify-center font-black text-xs shrink-0 omnipotent-glow">AMI</div>
-                    <div class="bg-gray-950 quantum-border p-4 rounded-2xl max-w-xl text-sm text-gray-200 leading-relaxed">${escapeHtml(aiText)}</div>
+                    <div class="bg-gray-900 border border-red-900/50 p-3 rounded-2xl max-w-xl text-sm text-gray-200">${escapeHtml(text)}</div>
                 </div>
             `;
             container.scrollTop = container.scrollHeight;
         }
 
+        function appendAIMessage(text) {
+            const container = document.getElementById('chat-container');
+            const messageId = 'ai-msg-' + Date.now();
+            container.innerHTML += `
+                <div id="${messageId}" class="flex items-start space-x-3 space-x-reverse">
+                    <div class="bg-red-600 text-white rounded-full w-9 h-9 flex items-center justify-center font-black text-xs shrink-0 omnipotent-glow">AMI</div>
+                    <div class="bg-gray-950 quantum-border p-4 rounded-2xl max-w-xl text-sm text-gray-200 leading-relaxed">${escapeHtml(text)}</div>
+                </div>
+            `;
+            container.scrollTop = container.scrollHeight;
+            return messageId;
+        }
+
+        function updateAIMessage(messageId, newText) {
+            const msgElement = document.getElementById(messageId);
+            if (msgElement) {
+                const contentDiv = msgElement.querySelector('div.bg-gray-950');
+                if (contentDiv) {
+                    contentDiv.innerHTML = escapeHtml(newText);
+                }
+            }
+            const container = document.getElementById('chat-container');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function logToTerminal(cmd) {
+            const terminal = document.getElementById('terminal-output');
+            terminal.innerHTML += `<div>[EXECUTE] ${escapeHtml(cmd)} -> Success.</div>`;
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
         function escapeHtml(text) {
             return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
-    <script>
-  // الدالة الأساسية لإرسال الأمر لـ Dify واستقبال الرد الحقيقي
-  async function executeCosmicCommand(userCommand) {
-      try {
-          const response = await fetch('https://api.dify.ai/v1/chat-messages', {
-              method: 'POST',
-              headers: {
-                  'Authorization': 'Bearer app-sECdyceP1zizS7oBvmPOtzhl',
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                  inputs: {},
-                  query: userCommand,
-                  response_mode: "blocking",
-                  user: "Founder-Amr"
-              })
-          });
-
-          const data = await response.json();
-          const realAnswer = data.answer || "تم التنفيذ بنجاح.";
-          
-          // عرض الرد الحقيقي الناتج من Dify
-          console.log(realAnswer);
-          alert(realAnswer); // هيظهر لك رسالة بالرد الحقيقي على الشاشة
-
-      } catch (error) {
-          console.error("خطأ في الاتصال:", error);
-          alert("حدث خطأ في الاتصال بالخلفية السيادية.");
-      }
-  }
-
-  // ربط زر "إطلاق الأمر الكوني" ومربع الإدخال تلقائياً
-  document.addEventListener("DOMContentLoaded", function() {
-      // حاول تعدل الأسماء دي لو الـ IDs في كودك مختلفة
-      const executeBtn = document.querySelector("#execute-btn") || document.querySelector("button"); 
-      const commandInput = document.querySelector("#command-input") || document.querySelector("input");
-
-      if (executeBtn && commandInput) {
-          executeBtn.addEventListener("click", function() {
-              const userText = commandInput.value.trim();
-              if (userText) {
-                  executeCosmicCommand(userText);
-              } else {
-                  alert("من فضلك اكتب أمراً أولاً يا فنان!");
-              }
-          });
-      }
-  });
-</script>
-
+    </script>
 </body>
 </html>

@@ -3,23 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- جدار حماية المتصفح لمنع الحقن وتحصين الواجهة -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdn.tailwindcss.com https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; connect-src 'self' https://api.dify.ai;">
     <title>AMI OS v10.0 | Sovereign Secure Core</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
         body { font-family: 'Tajawal', sans-serif; background-color: #020202; color: #f4f4f5; overflow-x: hidden; }
-        .glass-panel { background: rgba(8, 8, 8, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.06); }
+        .glass-panel { background: rgba(8, 8, 8, 0.92); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.06); }
         .enterprise-glow { box-shadow: 0 0 50px rgba(255, 255, 255, 0.03); }
         .enterprise-border-focus:focus { border-color: rgba(255, 255, 255, 0.4); outline: none; }
-        .bg-matrix { background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 24px 24px; }
+
+        /* تأثير المربعات والخطوط المتحركة في الخلفية */
+        .bg-cyber-grid {
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 32px 32px;
+            animation: gridPulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes gridPulse {
+            0% { background-position: 0 0; opacity: 0.7; }
+            100% { background-position: 32px 32px; opacity: 1; }
+        }
+
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #020202; }
         ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 2px; }
     </style>
 </head>
-<body class="bg-matrix min-h-screen flex flex-col justify-between selection:bg-white selection:text-black">
+<body class="bg-cyber-grid min-h-screen flex flex-col justify-between selection:bg-white selection:text-black">
 
     <!-- شاشة المصادقة المشفرة رياضياً -->
     <div id="auth-overlay" class="fixed inset-0 bg-black/98 z-50 flex items-center justify-center p-4 backdrop-blur-2xl">
@@ -71,7 +84,7 @@
                     <div class="bg-white text-black rounded-2xl w-9 h-9 flex items-center justify-center font-black text-xs shrink-0 shadow-xl">AMI</div>
                     <div class="glass-panel p-5 rounded-2xl max-w-2xl text-sm text-zinc-200 leading-relaxed shadow-xl border border-white/10 space-y-1.5">
                         <p class="font-bold text-white">النواة المشفرة تعمل بالمعيار العسكري.</p>
-                        <p class="text-zinc-400 text-xs">تم تفعيل التشفير المحلي، حماية الذاكرة، وسياسة عدم الاحتفاظ بالبيانات (Zero-Data Retention). بياناتك وقراراتك في أمان تام قانونياً وتقنياً.</p>
+                        <p class="text-zinc-400 text-xs">تم تفعيل التشفير المحلي، حماية الذاكرة، وسياسة عدم الاحتفاظ بالبيانات (Zero-Data Retention). الشبكة متحركة وتعمل بتأمين تام.</p>
                     </div>
                 </div>
             </div>
@@ -126,7 +139,6 @@
             const password = document.getElementById('auth-password').value.trim();
             if(!email || !password) { alert('الرجاء إدخال بيانات الاعتماد.'); return; }
             
-            // توليد تشفير رياضي محلي SHA-256 لكلمة المرور والبريد لضمان عدم تخزينها كنصوص عادية
             const token = await computeSHA256(email + ":" + password);
             localStorage.setItem('ami_secure_hash', token);
             unlockSystem();
@@ -228,7 +240,7 @@
                 const contentDiv = msgElement.querySelector('div.glass-panel');
                 if (contentDiv) contentDiv.innerHTML = escapeHtml(newText);
             }
-            document.getElementById('chat-container').scrollTop = document.getElementById('chat-container').scrollHeight;
+            document.getElementById('chat-container').scrollTop = document.getElementById('chat-container'].scrollHeight;
         }
 
         function escapeHtml(text) {

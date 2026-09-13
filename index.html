@@ -154,3 +154,36 @@
     </script>
 </body>
 </html>
+<script>
+  // دي الدالة اللي هتاخد الأمر وتبعت لـ Dify
+  async function executeCosmicCommand(userCommand) {
+      try {
+          const response = aicall = await fetch('https://api.dify.ai/v1/chat-messages', {
+              method: 'POST',
+              headers: {
+                  'Authorization': 'Bearer app-sECdyceP1zizS7oBvmPOtzhl',
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                  inputs: {},
+                  query: userCommand,
+                  response_mode: "blocking",
+                  user: "Founder-Amr"
+              })
+          });
+
+          const data = await response.json();
+          const realAnswer = data.answer || "تم التنفيذ.";
+          
+          // هنا بتعرض الرد الحقيقي في المكان المخصص للنتائج عندك في الواجهة
+          console.log(realAnswer);
+          alert(realAnswer); // مؤقتاً عشان تشوف الرد طالع قدامك
+
+      } catch (error) {
+          console.error("خطأ في الاتصال:", error);
+      }
+  }
+
+  // اربط الكود ده بزرار "إطلاق الأمر الكوني" عندك
+  // (بدل ما تستدعي الرد الوهمي القديم، استدعي دالة executeCosmicCommand واديها النص المكتوب)
+</script>

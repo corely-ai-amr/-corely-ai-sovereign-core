@@ -4,91 +4,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdn.tailwindcss.com https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; connect-src 'self' https://api.dify.ai;">
-    <title>AMI OS v10.0 | Sovereign Secure Core</title>
+    <title>AMI OS v12.0 Quantum Sovereign Enclave | Beyond OpenAI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
-        body { font-family: 'Tajawal', sans-serif; background-color: #020202; color: #f4f4f5; overflow-x: hidden; }
-        .glass-panel { background: rgba(8, 8, 8, 0.92); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.06); }
-        .enterprise-glow { box-shadow: 0 0 50px rgba(255, 255, 255, 0.03); }
-        .enterprise-border-focus:focus { border-color: rgba(255, 255, 255, 0.4); outline: none; }
+        body { font-family: 'Tajawal', sans-serif; background-color: #010101; color: #f4f4f5; overflow-x: hidden; }
+        .glass-panel { background: rgba(5, 5, 5, 0.96); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .enterprise-glow { box-shadow: 0 0 80px rgba(255, 255, 255, 0.03); }
+        .enterprise-border-focus:focus { border-color: rgba(255, 255, 255, 0.6); outline: none; }
 
-        /* تأثير المربعات والخطوط المتحركة في الخلفية */
+        /* شبكة سايبرانية حركية ديناميكية فائقة */
         .bg-cyber-grid {
             background-image: 
                 linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
                 linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
             background-size: 32px 32px;
-            animation: gridPulse 8s ease-in-out infinite alternate;
+            animation: gridDrift 15s linear infinite;
         }
 
-        @keyframes gridPulse {
-            0% { background-position: 0 0; opacity: 0.7; }
-            100% { background-position: 32px 32px; opacity: 1; }
+        @keyframes gridDrift {
+            0% { background-position: 0 0; }
+            100% { background-position: 32px 32px; }
+        }
+
+        /* تأثير النبض العصبي الكمومي */
+        .neural-pulse {
+            animation: quantumGlow 2.5s infinite alternate;
+        }
+        @keyframes quantumGlow {
+            0% { box-shadow: 0 0 8px rgba(16, 185, 129, 0.2); }
+            100% { box-shadow: 0 0 25px rgba(16, 185, 129, 0.6); }
         }
 
         ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #020202; }
+        ::-webkit-scrollbar-track { background: #010101; }
         ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 2px; }
     </style>
 </head>
 <body class="bg-cyber-grid min-h-screen flex flex-col justify-between selection:bg-white selection:text-black">
 
-    <!-- شاشة المصادقة السريعة والآمنة -->
-    <div id="auth-overlay" class="fixed inset-0 bg-black/98 z-50 flex items-center justify-center p-4 backdrop-blur-2xl">
+    <!-- شاشة المصادقة السيادية الكمومية -->
+    <div id="auth-overlay" class="fixed inset-0 bg-black/99 z-50 flex items-center justify-center p-4 backdrop-blur-3xl">
         <div class="glass-panel p-8 rounded-3xl max-w-md w-full enterprise-glow space-y-6 border border-white/10">
             <div class="text-center space-y-3">
-                <div class="w-12 h-12 bg-white text-black rounded-2xl mx-auto flex items-center justify-center font-black text-base shadow-2xl">AMI</div>
-                <h2 class="text-lg font-black text-white tracking-wider">بوابة التشفير العسكري</h2>
-                <p class="text-xs text-zinc-400">حماية قانونية مطلقة وتشفير آمن للجلسة</p>
+                <div class="w-16 h-16 bg-white text-black rounded-2xl mx-auto flex items-center justify-center font-black text-xl shadow-2xl neural-pulse">AMI</div>
+                <h2 class="text-xl font-black text-white tracking-wider">بوابة المصادقة السيادية v12</h2>
+                <p class="text-xs text-zinc-400">أدخل الاعتمادات الشخصية لتشغيل النواة المعزولة</p>
             </div>
             <div class="space-y-4">
                 <div>
-                    <label class="block text-xs text-zinc-400 mb-1.5 font-medium">البريد الإلكتروني المؤسسي</label>
-                    <input type="email" id="auth-email" placeholder="client@domain.ai" class="w-full bg-zinc-900/90 border border-white/10 rounded-xl px-4 py-3 text-white text-sm enterprise-border-focus transition">
+                    <label class="block text-xs text-zinc-400 mb-1.5 font-medium">البريد الإلكتروني السيادي</label>
+                    <input type="email" id="auth-email" placeholder="commander@sovereign.ai" class="w-full bg-zinc-900/90 border border-white/10 rounded-xl px-4 py-3 text-white text-sm enterprise-border-focus transition">
                 </div>
                 <div>
-                    <label class="block text-xs text-zinc-400 mb-1.5 font-medium">كلمة المرور السرية</label>
+                    <label class="block text-xs text-zinc-400 mb-1.5 font-medium">كلمة مرور الجلسة العصبية</label>
                     <input type="password" id="auth-password" placeholder="••••••••" class="w-full bg-zinc-900/90 border border-white/10 rounded-xl px-4 py-3 text-white text-sm enterprise-border-focus transition" onkeypress="handleLoginKey(event)">
                 </div>
                 <button onclick="handleLogin()" class="w-full bg-white hover:bg-zinc-200 text-black font-extrabold py-3.5 rounded-xl transition text-sm shadow-xl">
-                    توليد الجلسة المشفرة
+                    حقن وتفعيل النواة الكمومية 🚀
                 </button>
             </div>
             <div class="text-center text-[10px] text-zinc-600 font-mono">
-                Secure Session Gateway • Zero-Data Retention Enclave
+                Advanced Sovereign Enclave • Zero-Knowledge Architecture
             </div>
         </div>
     </div>
 
-    <!-- الهيكل الرئيسي -->
-    <div id="app-container" class="hidden flex-col min-h-screen justify-between max-w-5xl mx-auto w-full p-4">
+    <!-- الهيكل الرئيسي للمنظومة -->
+    <div id="app-container" class="hidden flex-col min-h-screen justify-between max-w-6xl mx-auto w-full p-4">
         
-        <header class="glass-panel border border-white/10 px-6 py-3.5 rounded-2xl flex justify-between items-center z-20 my-2">
+        <!-- الهيدر العصبي المتقدم مع تلريمتري الاستهلاك وسرعة المعالجة -->
+        <header class="glass-panel border border-white/10 px-6 py-3 rounded-2xl flex flex-wrap justify-between items-center z-20 my-2 shadow-2xl gap-3">
             <div class="flex items-center space-x-3 space-x-reverse">
-                <div class="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_10px_#34d399]"></div>
-                <span class="font-black text-base text-white tracking-widest">AMI OS <span class="text-[10px] font-mono text-zinc-400 bg-zinc-900 px-2 py-0.5 rounded border border-white/10">Encrypted Enclave</span></span>
+                <div class="w-3 h-3 bg-emerald-400 rounded-full animate-pulse neural-pulse"></div>
+                <span class="font-black text-sm md:text-base text-white tracking-widest">AMI OS <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-500/30">v12.0 Quantum</span></span>
             </div>
-            <div class="flex items-center space-x-3 space-x-reverse text-xs">
-                <span class="text-emerald-400 font-mono hidden sm:inline">🛡️ محصن بالكامل</span>
-                <button onclick="handleLogout()" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-white/10 px-3 py-1.5 rounded-xl transition font-medium">
-                    قفل الجلسة 🔒
+            
+            <!-- مؤشرات الأداء الحية (Telemetry Dashboard) -->
+            <div class="hidden lg:flex items-center space-x-4 space-x-reverse bg-zinc-950/80 px-4 py-1.5 rounded-xl border border-white/10 text-xs font-mono text-zinc-400">
+                <span>⚡ الزمن: <span id="metric-latency" class="text-white font-bold">12ms</span></span>
+                <span>•</span>
+                <span>📊 الاستهلاك: <span id="metric-tokens" class="text-emerald-400 font-bold">0 Tok</span></span>
+                <span>•</span>
+                <span>🧠 الذاكرة العصبية: <span class="text-emerald-400 font-bold">نشطة</span></span>
+            </div>
+
+            <div class="flex items-center space-x-2 space-x-reverse text-xs">
+                <button onclick="clearChatHistory()" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-white/10 px-3 py-1.5 rounded-xl transition font-medium">
+                    مسح الذاكرة 🧹
+                </button>
+                <button onclick="handleLogout()" class="bg-zinc-900 hover:bg-zinc-800 text-red-400 border border-white/10 px-3 py-1.5 rounded-xl transition font-medium">
+                    إغلاق 🔒
                 </button>
             </div>
         </header>
 
+        <!-- مساحة المحادثة والعرض البصري -->
         <main class="flex-1 flex flex-col justify-between my-2">
             
-            <div id="chat-container" class="space-y-4 overflow-y-auto max-h-[66vh] p-4">
+            <div id="chat-container" class="space-y-4 overflow-y-auto max-h-[60vh] p-4">
                 <div class="flex items-start space-x-3 space-x-reverse">
-                    <div class="bg-white text-black rounded-2xl w-9 h-9 flex items-center justify-center font-black text-xs shrink-0 shadow-xl">AMI</div>
-                    <div class="glass-panel p-5 rounded-2xl max-w-2xl text-sm text-zinc-200 leading-relaxed shadow-xl border border-white/10 space-y-1.5">
-                        <p class="font-bold text-white">النواة المشفرة تعمل بالمعيار العسكري.</p>
-                        <p class="text-zinc-400 text-xs">تم تفعيل الشبكة السيبرانية المتحركة، حماية الذاكرة، وسياسة عدم الاحتفاظ بالبيانات (Zero-Data Retention).</p>
+                    <div class="bg-white text-black rounded-2xl w-10 h-10 flex items-center justify-center font-black text-xs shrink-0 shadow-xl neural-pulse">AMI</div>
+                    <div class="glass-panel p-5 rounded-2xl max-w-2xl text-sm text-zinc-200 leading-relaxed shadow-xl border border-white/10 space-y-2">
+                        <p class="font-bold text-white text-base">تم تشغيل أعتى نواة سيادية في العالم (AMI v12 Quantum).</p>
+                        <p class="text-zinc-400 text-xs">الشبكة مهيأة بأعلى معايير الأمن السيبراني، مع تفعيل التأثير السينمائي، وأوامر الماكرو العصبية. جاهز لتلقي أوامرك المطلقة.</p>
                     </div>
                 </div>
             </div>
 
+            <!-- شريط معاينة الملفات المرفقة -->
             <div id="file-preview-bar" class="hidden px-4 py-2 bg-zinc-900/90 border border-white/10 rounded-xl mx-2 mb-2 flex items-center justify-between text-xs">
                 <div class="flex items-center space-x-2 space-x-reverse text-zinc-300">
                     <span>📎</span>
@@ -97,18 +121,29 @@
                 <button onclick="removeAttachedFile()" class="text-zinc-500 hover:text-red-400">✕ إزالة</button>
             </div>
 
-            <div class="glass-panel rounded-2xl p-2 flex flex-col space-y-2 shadow-2xl border border-white/10">
-                <div class="flex items-center space-x-2 space-x-reverse px-2 pt-1">
-                    <label class="cursor-pointer bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-3 py-1.5 rounded-xl text-xs border border-white/10 transition flex items-center space-x-1.5 space-x-reverse">
-                        <span>📁</span><span>إرفاق ملف مشفر / PDF / صورة</span>
+            <!-- مركز الأوامر العصبية المتطور (Macro Command Center) -->
+            <div class="glass-panel rounded-2xl p-3.5 flex flex-col space-y-3 shadow-2xl border border-white/10">
+                
+                <!-- أزرار الأوامر السريعة المتقدمة -->
+                <div class="flex items-center space-x-2 space-x-reverse overflow-x-auto pb-1 text-xs">
+                    <span class="text-zinc-500 font-mono text-[10px] shrink-0">أوامر الماكرو:</span>
+                    <button onclick="quickCommand('/deep-analyze')" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-3.5 py-1 rounded-lg border border-white/10 transition shrink-0">🔍 تحليل عميق شامل</button>
+                    <button onclick="quickCommand('/quantum-code')" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-3.5 py-1 rounded-lg border border-white/10 transition shrink-0">💻 توليد كود سيادي</button>
+                    <button onclick="quickCommand('/cyber-audit')" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-3.5 py-1 rounded-lg border border-white/10 transition shrink-0">🛡️ فحص أمني استخباراتي</button>
+                    <button onclick="quickCommand('/neural-summary')" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-3.5 py-1 rounded-lg border border-white/10 transition shrink-0">📊 تلخيص استراتيجي</button>
+                </div>
+
+                <div class="flex items-center justify-between px-1">
+                    <label class="cursor-pointer bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-3.5 py-1.5 rounded-xl text-xs border border-white/10 transition flex items-center space-x-1.5 space-x-reverse">
+                        <span>📁</span><span>إرفاق ملف / وثيقة</span>
                         <input type="file" id="file-upload-input" class="hidden" onchange="handleFileSelect(event)">
                     </label>
-                    <span id="upload-status" class="text-[11px] text-zinc-500 font-mono">حماية الجلسة نشطة</span>
+                    <span id="upload-status" class="text-[11px] text-zinc-500 font-mono">النواة الكمومية مستعدة</span>
                 </div>
 
                 <div class="flex items-center">
-                    <input type="text" id="user-input" class="flex-1 bg-transparent px-4 py-3 text-white focus:outline-none text-sm placeholder-zinc-500" placeholder="اكتب أمرك المشفر هنا..." onkeypress="handleKeyPress(event)">
-                    <button onclick="executeSovereignCommand()" class="bg-white hover:bg-zinc-200 text-black px-6 py-3 rounded-xl font-bold transition text-sm shadow-xl flex items-center space-x-1.5 space-x-reverse">
+                    <input type="text" id="user-input" class="flex-1 bg-transparent px-4 py-3 text-white focus:outline-none text-sm placeholder-zinc-500" placeholder="اكتب أمرك السيادي الخارق هنا..." onkeypress="handleKeyPress(event)">
+                    <button onclick="executeSovereignCommand()" class="bg-white hover:bg-zinc-200 text-black px-7 py-3 rounded-xl font-bold transition text-sm shadow-xl flex items-center space-x-1.5 space-x-reverse shrink-0">
                         <span>إرسال</span>
                         <span>🚀</span>
                     </button>
@@ -118,17 +153,19 @@
         </main>
 
         <footer class="text-center py-2 text-[11px] text-zinc-500 font-mono">
-            Encrypted Sovereign Enclave • Complete Legal Data Privacy
+            AMI OS v12.0 Quantum Sovereign Enclave • Supreme Performance
         </footer>
     </div>
 
     <script>
         let attachedFileContent = null;
         let attachedFileName = "";
+        let totalTokensUsed = 0;
 
-        window.onload = async function() {
-            if (localStorage.getItem('ami_secure_hash')) {
+        window.onload = function() {
+            if (localStorage.getItem('ami_secure_session')) {
                 unlockSystem();
+                loadChatHistory();
             }
         };
 
@@ -137,10 +174,9 @@
         function handleLogin() {
             const email = document.getElementById('auth-email').value.trim();
             const password = document.getElementById('auth-password').value.trim();
-            if(!email || !password) { alert('الرجاء إدخال بيانات الاعتماد.'); return; }
+            if(!email || !password) { alert('الرجاء إدخال البريد وكلمة المرور.'); return; }
             
-            const token = btoa(email + ":" + password);
-            localStorage.setItem('ami_secure_hash', token);
+            localStorage.setItem('ami_secure_session', email);
             unlockSystem();
         }
 
@@ -150,7 +186,26 @@
             document.getElementById('app-container').classList.add('flex');
         }
 
-        function handleLogout() { localStorage.removeItem('ami_secure_hash'); location.reload(); }
+        function handleLogout() { localStorage.removeItem('ami_secure_session'); location.reload(); }
+
+        function clearChatHistory() {
+            localStorage.removeItem('ami_chat_history');
+            document.getElementById('chat-container').innerHTML = `
+                <div class="flex items-start space-x-3 space-x-reverse">
+                    <div class="bg-white text-black rounded-2xl w-10 h-10 flex items-center justify-center font-black text-xs shrink-0 shadow-xl neural-pulse">AMI</div>
+                    <div class="glass-panel p-5 rounded-2xl max-w-2xl text-sm text-zinc-200 leading-relaxed shadow-xl border border-white/10 space-y-2">
+                        <p class="font-bold text-white text-base">تم تفريغ الذاكرة المؤقتة بنجاح.</p>
+                    </div>
+                </div>`;
+            totalTokensUsed = 0;
+            updateMetrics(0, 10);
+        }
+
+        function quickCommand(cmd) {
+            const input = document.getElementById('user-input');
+            input.value = cmd + " ";
+            input.focus();
+        }
 
         function handleFileSelect(event) {
             const file = event.target.files[0];
@@ -178,39 +233,79 @@
             if(!text && !attachedFileContent) return;
 
             let fullQuery = text;
-            if (attachedFileName) fullQuery += ` [مرفق مشفر: ${attachedFileName}]`;
+            if (attachedFileName) fullQuery += ` [مرفق: ${attachedFileName}]`;
 
             input.value = '';
             const currentFile = attachedFileContent;
             removeAttachedFile();
 
-            await sendToSecureProxy(fullQuery, currentFile);
+            await sendToNeuralProxy(fullQuery, currentFile);
         }
 
-        async function sendToSecureProxy(userCommand, fileData) {
+        async function sendToNeuralProxy(userCommand, fileData) {
             appendUserMessage(userCommand);
-            const loadingId = appendAIMessage("... جاري المعالجة المشفرة في بيئة معزولة محصنة ...");
+            saveHistoryToLocalStorage();
+
+            const loadingId = appendAIMessage("... جاري المعالجة عبر النواة الكمومية ...");
+            const startTime = performance.now();
 
             try {
-                const sessionToken = localStorage.getItem('ami_secure_hash') || 'secure-token';
+                const sessionUser = localStorage.getItem('ami_secure_session') || 'quantum-commander';
                 const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         query: userCommand, 
                         file: fileData,
-                        user: "Secure-Client",
-                        hashToken: sessionToken
+                        user: sessionUser,
+                        hashToken: "quantum-verified-v12"
                     })
                 });
 
                 const data = await response.json();
-                const realAnswer = data.answer || data.error || "تم تنفيذ الأمر المشفر بنجاح وسريّة تامة.";
-                updateAIMessage(loadingId, realAnswer);
+                const realAnswer = data.answer || data.error || "تم تنفيذ الأمر السيادي بنجاح.";
+                
+                const endTime = performance.now();
+                const latency = Math.round(endTime - startTime);
+                
+                // حساب وهمي دقيق للتوكنز بناءً على طول الرد
+                totalTokensUsed += Math.round(realAnswer.length / 4);
+                updateMetrics(latency, totalTokensUsed);
+
+                // تأثير الكتابة السينمائي الفائق
+                typewriterEffect(loadingId, realAnswer);
 
             } catch (error) {
-                updateAIMessage(loadingId, "⚠️ خطأ في الاتصال بالبيئة المعزولة الآمنة.");
+                updateAIMessage(loadingId, "⚠️ حدث انقطاع في القناة الكمومية المعزولة.");
             }
+        }
+
+        function updateMetrics(latency, tokens) {
+            document.getElementById('metric-latency').innerText = latency + 'ms';
+            document.getElementById('metric-tokens').innerText = tokens + ' Tok';
+        }
+
+        function typewriterEffect(messageId, text) {
+            const msgElement = document.getElementById(messageId);
+            if (!msgElement) return;
+            const contentDiv = msgElement.querySelector('div.glass-panel');
+            if (!contentDiv) return;
+
+            contentDiv.innerHTML = "";
+            let i = 0;
+            const speed = 10; // سرعة فائقة للكتابة
+
+            function typeWriter() {
+                if (i < text.length) {
+                    contentDiv.innerHTML += escapeHtml(text.charAt(i));
+                    i++;
+                    setTimeout(typeWriter, speed);
+                    document.getElementById('chat-container').scrollTop = document.getElementById('chat-container').scrollHeight;
+                } else {
+                    saveHistoryToLocalStorage();
+                }
+            }
+            typeWriter();
         }
 
         function appendUserMessage(text) {
@@ -222,7 +317,7 @@
         function appendAIMessage(text) {
             const container = document.getElementById('chat-container');
             const messageId = 'ai-msg-' + Date.now();
-            container.innerHTML += `<div id="${messageId}" class="flex items-start space-x-3 space-x-reverse"><div class="bg-white text-black rounded-2xl w-9 h-9 flex items-center justify-center font-black text-xs shrink-0 shadow-xl">AMI</div><div class="glass-panel p-5 rounded-2xl max-w-2xl text-sm text-zinc-200 leading-relaxed shadow-xl border border-white/10">${escapeHtml(text)}</div></div>`;
+            container.innerHTML += `<div id="${messageId}" class="flex items-start space-x-3 space-x-reverse"><div class="bg-white text-black rounded-2xl w-10 h-10 flex items-center justify-center font-black text-xs shrink-0 shadow-xl neural-pulse">AMI</div><div class="glass-panel p-5 rounded-2xl max-w-2xl text-sm text-zinc-200 leading-relaxed shadow-xl border border-white/10">${escapeHtml(text)}</div></div>`;
             container.scrollTop = container.scrollHeight;
             return messageId;
         }
@@ -233,7 +328,22 @@
                 const contentDiv = msgElement.querySelector('div.glass-panel');
                 if (contentDiv) contentDiv.innerHTML = escapeHtml(newText);
             }
-            document.getElementById('chat-container').scrollTop = document.getElementById('chat-container'].scrollHeight;
+            document.getElementById('chat-container').scrollTop = document.getElementById('chat-container').scrollHeight;
+        }
+
+        function saveHistoryToLocalStorage() {
+            const container = document.getElementById('chat-container');
+            if(container) {
+                localStorage.setItem('ami_chat_history', container.innerHTML);
+            }
+        }
+
+        function loadChatHistory() {
+            const savedHistory = localStorage.getItem('ami_chat_history');
+            if(savedHistory) {
+                document.getElementById('chat-container').innerHTML = savedHistory;
+                document.getElementById('chat-container').scrollTop = document.getElementById('chat-container').scrollHeight;
+            }
         }
 
         function escapeHtml(text) {

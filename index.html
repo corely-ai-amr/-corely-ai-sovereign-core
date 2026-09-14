@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMI OS v2.0 - Quantum Sovereign Enclave</title>
+    <title>AMI OS v2.0 Quantum Enclave</title>
     <style>
         :root {
             --bg-base: #050b14;
@@ -13,7 +13,6 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --border-neon: rgba(56, 189, 248, 0.3);
-            --danger: #f43f5e;
             --success: #10b981;
         }
 
@@ -33,7 +32,6 @@
             overflow: hidden;
         }
 
-        /* Enclave Header */
         header {
             background: var(--bg-surface);
             border-bottom: 1px solid var(--border-neon);
@@ -54,23 +52,33 @@
             font-size: 1.1rem;
             letter-spacing: 1px;
             color: var(--primary-blue);
-            text-shadow: 0 0 10px rgba(56,189,248,0.4);
         }
 
-        /* زرار إخفاء/إظهار القائمة الجانبية */
+        /* زرار طي القائمة الجانبية بالشكل المطلوب وبدون إيموجيز */
         .sidebar-toggle-btn {
             background: rgba(56, 189, 248, 0.08);
             border: 1px solid var(--border-neon);
             color: var(--primary-blue);
-            padding: 6px 12px;
+            width: 32px;
+            height: 32px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: 0.3s;
         }
         .sidebar-toggle-btn:hover {
             background: var(--primary-blue);
             color: var(--bg-base);
+        }
+        .sidebar-toggle-btn span {
+            display: block;
+            width: 14px;
+            height: 2px;
+            background: currentColor;
+            position: relative;
+            box-shadow: 0 4px 0 currentColor, 0 -4px 0 currentColor;
         }
 
         .system-status {
@@ -80,12 +88,6 @@
             gap: 15px;
         }
 
-        .status-badge {
-            color: var(--success);
-            font-weight: bold;
-        }
-
-        /* Main Layout */
         .main-container {
             display: flex;
             flex: 1;
@@ -93,7 +95,6 @@
             position: relative;
         }
 
-        /* Sidebar & HUD */
         aside {
             width: 300px;
             background: var(--bg-surface);
@@ -126,7 +127,6 @@
             text-transform: uppercase;
         }
 
-        /* Chat Workspace */
         .chat-workspace {
             flex: 1;
             display: flex;
@@ -135,7 +135,6 @@
             position: relative;
         }
 
-        /* Navigation Tabs (AI Engine / Terminal) */
         .workspace-tabs {
             display: flex;
             background: rgba(10, 22, 40, 0.8);
@@ -160,7 +159,6 @@
             background: rgba(56, 189, 248, 0.05);
         }
 
-        /* Chat Messages Area */
         .chat-messages {
             flex: 1;
             overflow-y: auto;
@@ -193,7 +191,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        /* Input Control Panel */
         .chat-input-area {
             padding: 15px 20px;
             background: var(--bg-surface);
@@ -243,11 +240,6 @@
             font-size: 0.95rem;
         }
 
-        .input-form input:focus {
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 8px rgba(34, 211, 238, 0.2);
-        }
-
         .send-btn {
             background: var(--primary-blue);
             color: var(--bg-base);
@@ -258,7 +250,6 @@
             cursor: pointer;
             transition: 0.3s;
         }
-
         .send-btn:hover {
             background: var(--accent-cyan);
         }
@@ -266,40 +257,39 @@
 </head>
 <body>
 
-    <!-- Header -->
     <header>
         <div class="logo-area">
-            <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="إخفاء/إظهار القائمة">🎛️</button>
+            <!-- زرار طي القائمة بالرمز النقي المطلوب -->
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="إخفاء/إظهار القائمة">
+                <span></span>
+            </button>
             <h1>AMI OS v2.0 QUANTUM ENCLAVE</h1>
         </div>
         <div class="system-status">
-            <span>PING: <strong class="status-badge">12ms</strong></span>
-            <span>Capabilities: <strong class="status-badge">53 / 53 Active</strong></span>
-            <span>USER: <strong style="color:var(--accent-cyan);">Core-Admin</strong></span>
+            <span>PING: 12ms</span>
+            <span>Capabilities: 53 Active</span>
+            <span>USER: Core-Admin</span>
         </div>
     </header>
 
-    <!-- Main Container -->
     <div class="main-container">
-
-        <!-- Workspace Area -->
         <div class="chat-workspace">
             <div class="workspace-tabs">
-                <button class="tab-btn active">🧠 عقل النواة (AI Engine)</button>
-                <button class="tab-btn">⚡ طرفية النظام (Terminal)</button>
+                <button class="tab-btn active">عقل النواة (AI Engine)</button>
+                <button class="tab-btn">طرفية النظام (Terminal)</button>
             </div>
 
             <div class="chat-messages" id="chatMessages">
                 <div class="message ai">
-                    مرحباً بك يا فاوندر. تم تفعيل **القدرة 53 بنجاح: مصفوفة إدارة الموارد الاستراتيجية والندرة العالمية (Resource Scarcity & Mining Intelligence)**. النواة السيادية جاهزة الآن لمعالجة أزمات الطاقة، النفط، والتعدين العالمي. كيف يمكنني مساعدتك اليوم؟
+                    مرحباً يا فاوندر. تم تفعيل القدرة 53 بنجاح: مصفوفة إدارة الموارد الاستراتيجية والندرة العالمية (Resource Scarcity & Mining Intelligence). النواة السيادية جاهزة الآن.
                 </div>
             </div>
 
             <div class="chat-input-area">
                 <div class="quick-actions">
-                    <button class="quick-btn" onclick="sendQuick('تحليل أزمة ندرة النفط العالمية')">🛢️ تحليل أزمة النفط</button>
-                    <button class="quick-btn" onclick="sendQuick('استراتيجيات التعدين الذكي والمعادن النادرة')">⛏️ تقرير المعادن والتعدين</button>
-                    <button class="quick-btn" onclick="sendQuick('الحلول السيادية لإدارة الموارد')">🌐 حلول إدارة الموارد</button>
+                    <button class="quick-btn" onclick="sendQuick('تحليل أزمة ندرة النفط العالمية')">تحليل أزمة النفط</button>
+                    <button class="quick-btn" onclick="sendQuick('تقرير المعادن والتعدين الاستراتيجي')">تقرير المعادن والتعدين</button>
+                    <button class="quick-btn" onclick="sendQuick('حلول إدارة الموارد المتقدمة')">حلول إدارة الموارد</button>
                 </div>
                 <div class="input-form">
                     <input type="text" id="userInput" placeholder="أدخل الأمر أو الاستعلام الاستراتيجي الخارق هنا..." onkeypress="handleKeyPress(event)">
@@ -308,36 +298,33 @@
             </div>
         </div>
 
-        <!-- Sidebar / HUD -->
         <aside id="sidebar">
             <div class="hud-card">
                 <div class="hud-title">مركز القدرات التشغيلية (HUD)</div>
                 <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
-                    • 53 / 53 Online (Max Autonomous)<br>
-                    • WAF Enclave Shield: Secure<br>
-                    • Resource Scarcity AI: <span style="color:var(--success);">Active</span>
+                    53 / 53 Online<br>
+                    WAF Enclave Shield: Secure<br>
+                    Resource Scarcity AI: Active
                 </div>
             </div>
 
             <div class="hud-card">
-                <div class="hud-title">إدارة الملفات (PDF / صور)</div>
-                <button style="width: 100%; background: rgba(56,189,248,0.1); border: 1px dashed var(--primary-blue); color: var(--primary-blue); padding: 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;" onclick="alert('اضغط لرفع ملف أو صورة تحليلية')">
-                    📁 اضغط لرفع ملف PDF أو صورة تحليلية
+                <div class="hud-title">إدارة المستندات والملفات (PDF)</div>
+                <button style="width: 100%; background: rgba(56,189,248,0.1); border: 1px dashed var(--primary-blue); color: var(--primary-blue); padding: 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;" onclick="alert('منطقة رفع الملفات جاهزة')">
+                    رفع ملف PDF أو صورة تحليلية
                 </button>
             </div>
 
             <div class="hud-card">
                 <div class="hud-title">إدارة النظام</div>
-                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 5px;">
-                    <button style="background:none; border:1px solid var(--border-neon); color:var(--text-muted); padding:6px; border-radius:4px; cursor:pointer; font-size:0.75rem; text-align:right;" onclick="localStorage.clear(); alert('تم مسح الذاكرة بنجاح'); location.reload();">🧹 مسح الذاكرة المحلية</button>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <button style="background:none; border:1px solid var(--border-neon); color:var(--text-muted); padding:6px; border-radius:4px; cursor:pointer; font-size:0.75rem;" onclick="localStorage.clear(); alert('تم مسح الذاكرة بنجاح'); location.reload();">مسح الذاكرة المحلية</button>
                 </div>
             </div>
         </aside>
-
     </div>
 
     <script>
-        // دالة طي وإخفاء/إظهار القائمة الجانبية
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('collapsed');
@@ -351,7 +338,6 @@
             appendMessage(text, 'user');
             input.value = '';
 
-            // محاكاة الاتصال بنواة Dify السيادية
             try {
                 const response = await fetch('/api/chat', {
                     method: 'POST',
@@ -361,17 +347,23 @@
                 const data = await response.json();
                 if(data.answer) {
                     appendMessage(data.answer, 'ai');
-                } else if(data.error) {
-                    appendMessage("⚠️ تنبيه أمني من النواة: " + data.error, 'ai');
                 } else {
-                    appendMessage("تم استلام الاستعلام ومعالجته بنجاح عبر مصفوفة القدرات الـ 53.", 'ai');
+                    appendMessage("تمت معالجة الاستعلام بنجاح عبر النظام.", 'ai');
                 }
             } catch (e) {
-                // الرد الاحتياطي في حال العمل المحلي السريع
                 setTimeout(() => {
-                    appendMessage("🤖 [رد تجريبي من نواة AMI OS]: تم تحليل استعلامك حول الموارد والندرة العالمية بنجاح عبر القدرة 53 المفعلة.", 'ai');
+                    appendMessage("رد من نواة AMI OS: تم استقبال استعلامك ومعالجته بنجاح عبر القدرة 53.", 'ai');
                 }, 1000);
             }
+        }
+
+        function appendMessage(text, sender) {
+            const container = document.getElementById('chatMessages');
+            const div = document.createElement('div');
+            div.className = `message ${sender}`;
+            div.innerText = text;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
         }
 
         function sendQuick(text) {

@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     const clientIP = req.headers['x-forwarded-for'] || 'secure-client';
     const currentTime = Date.now();
     
-    // WAF Rate Limiting المحلي
+    // WAF Rate Limiting المحلي لحماية السيرفر من السبام
     if (!requestTracker.has(clientIP)) {
         requestTracker.set(clientIP, { count: 1, startTime: currentTime });
     } else {
@@ -37,7 +37,8 @@ export default async function handler(req, res) {
     const sanitizedQuery = typeof query === 'string' ? query.slice(0, 5000) : '';
 
     try {
-        const dResponse = await fetch('https://api.dify.ai/v1/workflows/run', {
+        // إرسال الطلب لمسار الـ Chat-Messages للتعامل مع الـ Chatflow وتفعيل الأدوات
+        const dResponse = await fetch('https://api.dify.ai/v1/chat-messages', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${apiKey}`,
@@ -53,7 +54,7 @@ export default async function handler(req, res) {
 
         const data = await dResponse.json();
         
-        // إرجاع الرد الحقيقي القادم من Dify Chatflow بنجاح
+        // إرجاع الرد الحقيقي القادم من النواة للواجهة
         return res.status(200).json(data);
     } catch (error) {
         return res.status(500).json({ error: 'Secure enclave communication error with AI core.' });

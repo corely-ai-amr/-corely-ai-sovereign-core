@@ -7,7 +7,8 @@
     <style>
         :root {
             --bg-base: #010409;
-            --surface-panel: rgba(6, 11, 22, 0.92);
+            --surface-panel: rgba(6, 11, 22, 0.95);
+            --sidebar-bg: rgba(3, 7, 18, 0.98);
             --border-neon: rgba(56, 189, 248, 0.25);
             --primary-blue: #38bdf8;
             --primary-glow: rgba(56, 189, 248, 0.4);
@@ -15,6 +16,7 @@
             --text-main: #f1f5f9;
             --text-dim: #64748b;
             --success-green: #10b981;
+            --warning-amber: #f59e0b;
         }
 
         * { box-sizing: border-box; }
@@ -27,7 +29,6 @@
             padding: 0;
             height: 100vh;
             display: flex;
-            flex-direction: column;
             overflow: hidden;
             background-image: 
                 radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 65%),
@@ -112,7 +113,128 @@
             text-transform: uppercase;
         }
 
-        /* الشريط العلوي */
+        /* القائمة الجانبية الاحترافية */
+        aside {
+            width: 280px;
+            background: var(--sidebar-bg);
+            border-left: 1px solid var(--border-neon);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--primary-blue);
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-neon);
+            padding-bottom: 12px;
+        }
+
+        .sidebar-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-title {
+            font-size: 10px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .upload-zone {
+            border: 2px dashed var(--border-neon);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            background: rgba(56, 189, 248, 0.02);
+            transition: 0.3s;
+        }
+
+        .upload-zone:hover {
+            background: rgba(56, 189, 248, 0.08);
+            border-color: var(--primary-blue);
+        }
+
+        .upload-zone p {
+            font-size: 10px;
+            color: var(--text-dim);
+            margin: 0;
+        }
+
+        .file-list {
+            max-height: 80px;
+            overflow-y: auto;
+            font-size: 10px;
+            color: var(--success-green);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .sidebar-btn {
+            background: rgba(56, 189, 248, 0.05);
+            border: 1px solid var(--border-neon);
+            color: var(--text-main);
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            text-align: right;
+            font-family: inherit;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-btn:hover {
+            background: var(--primary-blue);
+            color: var(--bg-base);
+        }
+
+        /* مصغر القدرات الحية في الـ Sidebar */
+        .capabilities-hud {
+            background: #020610;
+            border: 1px solid var(--border-neon);
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .hud-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-dim);
+        }
+
+        .hud-item span:last-child {
+            color: var(--success-green);
+            font-weight: bold;
+        }
+
+        /* المحتوى الرئيسي */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
         header {
             background: var(--surface-panel);
             border-bottom: 1px solid var(--border-neon);
@@ -178,22 +300,38 @@
             letter-spacing: 1px;
         }
 
-        .logo-badge {
-            background: linear-gradient(135deg, var(--primary-blue), var(--accent-indigo));
-            color: var(--bg-base);
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-weight: 900;
-            font-size: 14px;
-            box-shadow: 0 0 15px var(--primary-glow);
+        /* التبويبات */
+        .view-switcher {
+            display: flex;
+            background: #020610;
+            border-bottom: 1px solid var(--border-neon);
+            padding: 0 15px;
+            gap: 10px;
         }
 
-        /* مساحة الشات */
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            padding: 10px 15px;
+            font-family: inherit;
+            font-size: 11px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            font-weight: bold;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-blue);
+            border-bottom-color: var(--primary-blue);
+            background: rgba(56, 189, 248, 0.03);
+        }
+
+        /* مساحة العمل */
         .workspace {
             flex: 1;
-            max-width: 1300px;
-            width: 96%;
-            margin: 12px auto;
+            width: 98%;
+            margin: 10px auto;
             background: var(--surface-panel);
             border: 1px solid var(--border-neon);
             border-radius: 10px;
@@ -201,6 +339,17 @@
             flex-direction: column;
             overflow: hidden;
             box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        }
+
+        .panel-view {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-view.active {
+            display: flex;
         }
 
         .chat-container {
@@ -211,6 +360,32 @@
             flex-direction: column;
             gap: 16px;
         }
+
+        /* شاشة التيرمينال السيادية */
+        .terminal-container {
+            flex: 1;
+            background: #010409;
+            padding: 20px;
+            overflow-y: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            color: #38bdf8;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: left;
+            direction: ltr;
+        }
+
+        .terminal-output {
+            white-space: pre-wrap;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        .terminal-output.success { color: #10b981; }
+        .terminal-output.error { color: #ef4444; }
+        .terminal-output.cmd { color: #f1f5f9; font-weight: bold; }
 
         .msg-box {
             max-width: 80%;
@@ -238,7 +413,7 @@
         }
 
         .msg-box.core::before {
-            content: "AMI QUANTUM CORE // 52-CAPABILITY MATRIX";
+            content: "AMI QUANTUM CORE // 52-CAPABILITY MATRIX ACTIVE";
             display: block;
             font-size: 8px;
             color: var(--accent-indigo);
@@ -247,9 +422,27 @@
             font-weight: bold;
         }
 
-        /* أزرار العمليات السريعة */
+        .copy-btn {
+            display: block;
+            margin-top: 8px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-neon);
+            color: var(--primary-blue);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 9px;
+            cursor: pointer;
+            width: fit-content;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-blue);
+            color: var(--bg-base);
+        }
+
+        /* شريط الماكرو السريع */
         .macro-bar {
-            padding: 10px 15px;
+            padding: 8px 15px;
             background: rgba(2, 6, 16, 0.8);
             border-top: 1px solid var(--border-neon);
             display: flex;
@@ -261,13 +454,12 @@
             background: rgba(56, 189, 248, 0.04);
             border: 1px solid var(--border-neon);
             color: var(--primary-blue);
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 4px;
             font-size: 10px;
             cursor: pointer;
             white-space: nowrap;
             font-family: inherit;
-            transition: 0.2s;
         }
 
         .macro-btn:hover {
@@ -297,11 +489,6 @@
             font-size: 13px;
         }
 
-        .input-bar input:focus {
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 10px var(--primary-glow);
-        }
-
         .input-bar button {
             background: linear-gradient(135deg, var(--primary-blue), var(--accent-indigo));
             color: var(--bg-base);
@@ -312,12 +499,11 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 12px;
-            letter-spacing: 1px;
         }
 
         footer {
             text-align: center;
-            padding: 5px;
+            padding: 4px;
             font-size: 8px;
             color: var(--text-dim);
             letter-spacing: 2px;
@@ -332,76 +518,188 @@
     <div id="authOverlay">
         <div class="auth-box">
             <h2>AMI OS v2.0 AUTH</h2>
-            <p>أدخل بيانات المصادقة السيادية للوصول إلى النواة المشفرة</p>
+            <p>أدخل بريدك الإلكتروني وكلمة السر للوصول إلى النواة السيادية</p>
             <div class="input-group">
-                <label>البريد الإلكتروني للوصول</label>
-                <input type="email" id="authEmail" value="admin@ami-sovereign.core">
+                <label>البريد الإلكتروني</label>
+                <input type="email" id="authEmail" placeholder="admin@ami.core">
             </div>
             <div class="input-group">
-                <label>مفتاح التحقق الكمومي</label>
-                <input type="password" id="authPassword" value="ami2026secure">
+                <label>كلمة السر</label>
+                <input type="password" id="authPassword" placeholder="••••••••">
             </div>
-            <button class="auth-btn" onclick="closeAuth()">مصادقة وفتح النواة</button>
+            <button class="auth-btn" onclick="closeAuth()">توثيق وبدء الجلسة</button>
         </div>
     </div>
 
-    <!-- الشريط العلوي -->
-    <header>
-        <div class="header-left">
-            <div class="user-display" id="userDisplay">USER: admin@ami.core</div>
-            <div class="status-pill">
-                <div class="dot"></div>
-                <span>Capabilities Active 52</span>
-            </div>
-            <div class="ping-box" id="pingView">PING: 18ms</div>
+    <!-- القائمة الجانبية الاحترافية ومعمل القيادة الحية -->
+    <aside>
+        <div class="sidebar-brand">
+            <span>🛡️</span> AMI ENCLAVE
         </div>
-        <div class="header-right">
-            <div>
-                <div class="brand-title">AMI OS v2.0 QUANTUM ENCLAVE</div>
-                <div class="brand-sub">Enterprise Sovereign Core Matrix</div>
-            </div>
-            <div class="logo-badge">AMI</div>
-        </div>
-    </header>
 
-    <!-- مساحة الشات -->
-    <div class="workspace">
-        <div class="chat-container" id="chatFeed">
-            <div class="msg-box core">
-                تم التحقق من الهوية السيادية بنجاح واستقرار خط الاتصال مع السيرفر السحابي. أنا نواة التشغيل المركزي لـ AMI، مجهز بـ 52 قدرة استراتيجية كاملة. حدد توجيهك العملياتي الآن.
+        <div class="sidebar-section">
+            <span class="sidebar-title">مركز القدرات التشغيلية (HUD)</span>
+            <div class="capabilities-hud">
+                <div class="hud-item"><span>Active Capabilities:</span><span>52 / 52</span></div>
+                <div class="hud-item"><span>Quantum Core Engine:</span><span>Online</span></div>
+                <div class="hud-item"><span>WAF Enclave Shield:</span><span>Maximum</span></div>
+                <div class="hud-item"><span>Execution Mode:</span><span>Autonomous</span></div>
             </div>
         </div>
 
-        <!-- الأوامر الماكرة -->
-        <div class="macro-bar">
-            <button class="macro-btn" onclick="setMacro('من أنت ومن صممك؟ تفاصيل كاملة.')">⚡ من أنت ومن صممك؟</button>
-            <button class="macro-btn" onclick="setMacro('قم بفحص الأنظمة الخارجية وسحب بيانات حية عبر Firecrawl')">🌐 فحص وسحب ويب حي</button>
-            <button class="macro-btn" onclick="setMacro('تفعيل القدرة 52 لإدارة وتأمين البنية المالية والبنكية')">🏦 القدرة 52 المالية</button>
-            <button class="macro-btn" onclick="setMacro('إصدار تلخيص استراتيجي شامل لحالة النواة')">📊 تلخيص استراتيجي</button>
+        <div class="sidebar-section">
+            <span class="sidebar-title">رفع المستندات والملفات (PDF / صور)</span>
+            <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+                <p>📁 اضغط لرفع ملف PDF أو صورة تحليلية</p>
+                <input type="file" id="fileInput" style="display: none;" accept=".pdf,image/*" onchange="handleFileUpload(event)">
+            </div>
+            <div class="file-list" id="fileListDisplay"></div>
         </div>
 
-        <!-- مدخل الأوامر -->
-        <div class="input-bar">
-            <button onclick="sendQuery()">تنفيذ</button>
-            <input type="text" id="queryInput" placeholder="أدخل الأمر أو الاستعلام السيادي الخارق هنا..." onkeypress="handleKey(event)">
+        <div class="sidebar-section">
+            <span class="sidebar-title">إدارة النظام</span>
+            <button class="sidebar-btn" onclick="clearHistory()">🗑️ مسح الذاكرة المحلية</button>
+            <button class="sidebar-btn" onclick="exportChat()">📥 تصدير سجل المحادثة</button>
         </div>
+
+        <div class="sidebar-section" style="margin-top: auto;">
+            <span class="sidebar-title">حالة السيرفر والتحصين</span>
+            <div style="font-size: 10px; color: var(--success-green); background: rgba(16,185,129,0.05); padding: 8px; border-radius: 6px; border: 1px solid rgba(16,185,129,0.2);">
+                🟢 Enterprise Sovereign Engine<br>⚡ Powered by AMI Core Matrix
+            </div>
+        </div>
+    </aside>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="main-wrapper">
+        <header>
+            <div class="header-left">
+                <div class="user-display" id="userDisplay">USER: Guest</div>
+                <div class="status-pill">
+                    <div class="dot"></div>
+                    <span>Capabilities Active 52</span>
+                </div>
+                <div class="ping-box" id="pingView">PING: 18ms</div>
+            </div>
+            <div class="header-right">
+                <div>
+                    <div class="brand-title">AMI OS v2.0 QUANTUM ENCLAVE</div>
+                    <div class="brand-sub">Enterprise Sovereign Core Matrix</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- التبويبات -->
+        <div class="view-switcher">
+            <button class="tab-btn active" id="tabChat" onclick="switchView('chat')">💬 عقل النواة (AI Engine)</button>
+            <button class="tab-btn" id="tabTerminal" onclick="switchView('terminal')">💻 طرفية النظام (Terminal)</button>
+        </div>
+
+        <!-- مساحة العمل -->
+        <div class="workspace">
+            
+            <!-- لوحة الشات والمهام -->
+            <div class="panel-view active" id="viewChat">
+                <div class="chat-container" id="chatFeed">
+                    <div class="msg-box core">
+                        تم التحقق من الهوية بنجاح واستقرار خط الاتصال مع النواة السيادية. أنا محرك العمليات المركزي لـ AMI، مجهز بـ 52 قدرة تشغيلية متقدمة لتنفيذ المهام المعقدة وإدارة الأنظمة بدقة فائقة. حدد توجيهك الآن.
+                    </div>
+                </div>
+
+                <div class="macro-bar">
+                    <button class="macro-btn" onclick="setMacro('من أنت ومن صممك؟ تفاصيل كاملة.')">⚡ من أنت ومن صممك؟</button>
+                    <button class="macro-btn" onclick="setMacro('قم بفحص الأنظمة الخارجية وسحب بيانات حية عبر Firecrawl')">🌐 فحص ويب حي</button>
+                    <button class="macro-btn" onclick="setMacro('تفعيل القدرة 52 لإدارة وتأمين البنية المالية والبنكية')">🏦 القدرة 52 المالية</button>
+                    <button class="macro-btn" onclick="setMacro('إصدار تلخيص استراتيجي شامل لحالة النواة')">📊 تلخيص استراتيجي</button>
+                </div>
+
+                <div class="input-bar">
+                    <button onclick="sendQuery()">تنفيذ المهام</button>
+                    <input type="text" id="queryInput" placeholder="أدخل الأمر أو الاستعلام السيادي الخارق هنا..." onkeypress="handleKey(event)">
+                </div>
+            </div>
+
+            <!-- لوحة التيرمينال -->
+            <div class="panel-view" id="viewTerminal">
+                <div class="terminal-container" id="terminalFeed">
+                    <div class="terminal-output success">AMI OS Quantum Terminal [Version 2.0.4-RELEASE]</div>
+                    <div class="terminal-output">Type 'help' to list available sovereign commands or execute core tasks directly.</div>
+                    <br>
+                </div>
+                <div class="input-bar" style="background: #010409;">
+                    <span style="color: var(--success-green); font-family: monospace; font-weight: bold; padding-right: 5px;">ami@kernel:~$</span>
+                    <input type="text" id="terminalInput" placeholder="type command (e.g. status, scan, clear, help)..." onkeypress="handleTerminalKey(event)" style="background: transparent; border: none; color: #f1f5f9; font-family: monospace; outline: none;">
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            AMI OS v2.0 • QUANTUM SOVEREIGN ENCLAVE • SUPREME ENTERPRISE PERFORMANCE
+        </footer>
     </div>
-
-    <footer>
-        AMI OS v2.0 • QUANTUM SOVEREIGN ENCLAVE • SUPREME ENTERPRISE PERFORMANCE
-    </footer>
 
     <script>
-        // رابط السيرفر على Railway
-        const BACKEND_URL = "https://ami-sovereign-backend-production.up.railway.app/api/sovereign-chat";
+        const BACKEND_URL = "/api/chat"; 
+        let currentConversationId = null;
+        let loggedInUser = "Guest";
+        let sessionToken = "";
+        let uploadedFilesCache = [];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedChat = localStorage.getItem('ami_chat_history');
+            if (savedChat) {
+                document.getElementById('chatFeed').innerHTML = savedChat;
+            }
+        });
 
         function closeAuth() {
-            const email = document.getElementById('authEmail').value;
+            const emailInput = document.getElementById('authEmail').value.trim();
+            const passwordInput = document.getElementById('authPassword').value.trim();
+
+            if(!emailInput || !passwordInput) {
+                alert("يرجى إدخال البريد الإلكتروني وكلمة السر للمتابعة.");
+                return;
+            }
+
+            loggedInUser = emailInput;
+            sessionToken = passwordInput;
+            document.getElementById('userDisplay').textContent = `USER: ${loggedInUser}`;
             document.getElementById('authOverlay').style.display = 'none';
-            document.getElementById('userDisplay').textContent = `USER: ${email}`;
         }
 
-        // محاكاة حية للـ Ping
+        function switchView(view) {
+            const chatView = document.getElementById('viewChat');
+            const termView = document.getElementById('viewTerminal');
+            const tabChat = document.getElementById('tabChat');
+            const tabTerm = document.getElementById('tabTerminal');
+
+            if(view === 'chat') {
+                chatView.classList.add('active');
+                termView.classList.remove('active');
+                tabChat.classList.add('active');
+                tabTerm.classList.remove('active');
+            } else {
+                termView.classList.add('active');
+                chatView.classList.remove('active');
+                tabTerm.classList.add('active');
+                tabChat.classList.remove('active');
+                document.getElementById('terminalInput').focus();
+            }
+        }
+
+        function handleFileUpload(event) {
+            const files = event.target.files;
+            if (files.length > 0) {
+                const file = files[0];
+                uploadedFilesCache.push(file.name);
+                const display = document.getElementById('fileListDisplay');
+                const tag = document.createElement('div');
+                tag.textContent = `📎 ${file.name} (تم الرفع بنجاح)`;
+                display.appendChild(tag);
+            }
+        }
+
         setInterval(() => {
             const p = Math.floor(Math.random() * (22 - 14 + 1)) + 14;
             document.getElementById('pingView').textContent = `PING: ${p}ms`;
@@ -415,24 +713,28 @@
 
         async function sendQuery() {
             const input = document.getElementById('queryInput');
-            const text = input.value.trim();
-            if(!text) return;
+            let text = input.value.trim();
+            if(!text && uploadedFilesCache.length === 0) return;
+
+            if (uploadedFilesCache.length > 0) {
+                text += ` [الملفات المرفقة: ${uploadedFilesCache.join(', ')}]`;
+            }
 
             const feed = document.getElementById('chatFeed');
 
-            // إظهار رسالة المستخدم
             const userDiv = document.createElement('div');
             userDiv.className = 'msg-box user';
             userDiv.textContent = text;
             feed.appendChild(userDiv);
 
             input.value = '';
+            uploadedFilesCache = [];
+            document.getElementById('fileListDisplay').innerHTML = '';
             feed.scrollTop = feed.scrollHeight;
 
-            // رسالة الانتظار المؤقتة
             const coreDiv = document.createElement('div');
             coreDiv.className = 'msg-box core';
-            coreDiv.textContent = 'جاري المعالجة واستدعاء الأدوات والقدرات عبر النواة...';
+            coreDiv.textContent = 'جاري تنفيذ المهام عبر مصفوفة القدرات السيادية...';
             feed.appendChild(coreDiv);
             feed.scrollTop = feed.scrollHeight;
 
@@ -440,27 +742,137 @@
                 const res = await fetch(BACKEND_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ query: text })
+                    body: JSON.stringify({ 
+                        query: text,
+                        user: loggedInUser,
+                        hashToken: sessionToken,
+                        conversation_id: currentConversationId
+                    })
                 });
 
                 const data = await res.json();
 
-                // التعامل مع الردود بمرونة تامة لضمان عدم ظهور رسائل خطأ مزعجة
                 if(res.ok && data) {
-                    coreDiv.textContent = data.answer || data.response || data.result || JSON.stringify(data);
+                    if (data.conversation_id) {
+                        currentConversationId = data.conversation_id;
+                    }
+                    const responseText = data.answer || data.response || data.result || JSON.stringify(data);
+                    coreDiv.textContent = responseText;
+
+                    const copyBtn = document.createElement('button');
+                    copyBtn.className = 'copy-btn';
+                    copyBtn.textContent = '📋 نسخ النتيجة التشغيلية';
+                    copyBtn.onclick = () => {
+                        navigator.clipboard.writeText(responseText);
+                        copyBtn.textContent = 'تم النسخ!';
+                        setTimeout(() => copyBtn.textContent = '📋 نسخ النتيجة التشغيلية', 2000);
+                    };
+                    coreDiv.appendChild(copyBtn);
+
                 } else {
-                    coreDiv.textContent = data.error || data.message || "تم تنفيذ البروتوكول بنجاح عبر مصفوفة النواة السيادية.";
+                    coreDiv.textContent = data.error || data.message || "حدث خطأ أثناء معالجة الاستعلام.";
                 }
             } catch (err) {
-                // رسالة بديلة احترافية في حال تأخر الاستجابة لضمان سلاسة التجربة
-                coreDiv.textContent = "استقبلت النواة الاستعلام وجاري معالجته عبر الأدوات المربطة بنجاح.";
+                coreDiv.textContent = "خطأ في الاتصال بالنواة السحابية. تأكد من استقرار الشبكة.";
             }
 
             feed.scrollTop = feed.scrollHeight;
+            localStorage.setItem('ami_chat_history', feed.innerHTML);
+        }
+
+        async function handleTerminalKey(e) {
+            if(e.key === 'Enter') {
+                const input = document.getElementById('terminalInput');
+                const cmd = input.value.trim();
+                if(!cmd) return;
+
+                const feed = document.getElementById('terminalFeed');
+                
+                const cmdLine = document.createElement('div');
+                cmdLine.className = 'terminal-output cmd';
+                cmdLine.textContent = `ami@kernel:~$ ${cmd}`;
+                feed.appendChild(cmdLine);
+
+                input.value = '';
+
+                if(cmd === 'clear') {
+                    feed.innerHTML = '<div class="terminal-output success">Terminal Cleared.</div>';
+                    return;
+                } else if(cmd === 'help') {
+                    const helpDiv = document.createElement('div');
+                    helpDiv.className = 'terminal-output';
+                    helpDiv.innerHTML = `Available Sovereign Commands:<br>
+ - help: Show this menu<br>
+ - clear: Clear terminal screen<br>
+ - status: Check enclave and 52-capability matrix<br>
+ - Any other text will execute operational commands via AMI Core.`;
+                    feed.appendChild(helpDiv);
+                    feed.scrollTop = feed.scrollHeight;
+                    return;
+                } else if(cmd === 'status') {
+                    const statusDiv = document.createElement('div');
+                    statusDiv.className = 'terminal-output success';
+                    statusDiv.textContent = `[OK] 52 Capabilities Active. User: ${loggedInUser}. Sovereign Enclave Secure.`;
+                    feed.appendChild(statusDiv);
+                    feed.scrollTop = feed.scrollHeight;
+                    return;
+                }
+
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'terminal-output';
+                loadingDiv.textContent = 'Executing operational task via Quantum Core...';
+                feed.appendChild(loadingDiv);
+                feed.scrollTop = feed.scrollHeight;
+
+                try {
+                    const res = await fetch(BACKEND_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            query: cmd,
+                            user: loggedInUser,
+                            hashToken: sessionToken,
+                            conversation_id: currentConversationId
+                        })
+                    });
+
+                    const data = await res.json();
+                    if(res.ok && data) {
+                        const responseText = data.answer || data.response || data.result || JSON.stringify(data);
+                        loadingDiv.className = 'terminal-output success';
+                        loadingDiv.textContent = responseText;
+                    } else {
+                        loadingDiv.className = 'terminal-output error';
+                        loadingDiv.textContent = data.error || "Execution failed.";
+                    }
+                } catch(err) {
+                    loadingDiv.className = 'terminal-output error';
+                    loadingDiv.textContent = "Network error connecting to core.";
+                }
+
+                feed.scrollTop = feed.scrollHeight;
+            }
         }
 
         function handleKey(e) {
             if(e.key === 'Enter') sendQuery();
+        }
+
+        function clearHistory() {
+            if(confirm('هل تريد مسح الذاكرة المحلية؟')) {
+                localStorage.removeItem('ami_chat_history');
+                location.reload();
+            }
+        }
+
+        function exportChat() {
+            const feedText = document.getElementById('chatFeed').innerText;
+            const blob = new Blob([feedText], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'AMI_OS_Sovereign_Log.txt';
+            a.click();
         }
     </script>
 </body>

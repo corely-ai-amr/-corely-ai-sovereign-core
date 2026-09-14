@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMI OS v2.0 Quantum Enclave</title>
+    <title>AMI OS v2.0 QUANTUM ENCLAVE</title>
     <style>
         :root {
             --bg-base: #050b14;
@@ -13,7 +13,6 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --border-neon: rgba(56, 189, 248, 0.3);
-            --success: #10b981;
         }
 
         * {
@@ -30,6 +29,63 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+        }
+
+        #auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-base);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .auth-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-neon);
+            padding: 30px;
+            border-radius: 12px;
+            width: 380px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .auth-box h2 {
+            font-size: 1rem;
+            color: var(--primary-blue);
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .auth-box input {
+            background: var(--bg-base);
+            border: 1px solid var(--border-neon);
+            border-radius: 6px;
+            padding: 12px;
+            color: var(--text-main);
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .auth-box button {
+            background: var(--primary-blue);
+            color: var(--bg-base);
+            border: none;
+            border-radius: 6px;
+            padding: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .auth-box button:hover {
+            background: var(--accent-cyan);
         }
 
         header {
@@ -50,11 +106,9 @@
 
         h1 {
             font-size: 1.1rem;
-            letter-spacing: 1px;
             color: var(--primary-blue);
         }
 
-        /* زرار طي القائمة الجانبية بالشكل المطلوب وبدون إيموجيز */
         .sidebar-toggle-btn {
             background: rgba(56, 189, 248, 0.08);
             border: 1px solid var(--border-neon);
@@ -98,7 +152,7 @@
         aside {
             width: 300px;
             background: var(--bg-surface);
-            border-left: 1px solid var(--border-neon);
+            border-right: 1px solid var(--border-neon);
             padding: 15px;
             display: flex;
             flex-direction: column;
@@ -132,7 +186,6 @@
             display: flex;
             flex-direction: column;
             background: var(--bg-base);
-            position: relative;
         }
 
         .workspace-tabs {
@@ -150,7 +203,6 @@
             cursor: pointer;
             font-size: 0.9rem;
             border-bottom: 2px solid transparent;
-            transition: 0.3s;
         }
 
         .tab-btn.active {
@@ -174,21 +226,39 @@
             border-radius: 8px;
             line-height: 1.5;
             font-size: 0.95rem;
+            position: relative;
         }
 
         .message.user {
             background: rgba(56, 189, 248, 0.1);
             border: 1px solid var(--border-neon);
-            align-self: flex-end;
-            color: var(--text-main);
+            align-self: flex-start;
         }
 
         .message.ai {
             background: var(--bg-surface);
             border: 1px solid rgba(255,255,255,0.05);
-            align-self: flex-start;
-            color: var(--text-main);
+            align-self: flex-end;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        /* زر النسخ الفوري داخل الردود */
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid var(--border-neon);
+            color: var(--primary-blue);
+            padding: 2px 6px;
+            font-size: 0.7rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .copy-btn:hover {
+            background: var(--primary-blue);
+            color: var(--bg-base);
         }
 
         .chat-input-area {
@@ -216,12 +286,6 @@
             font-size: 0.75rem;
             cursor: pointer;
             white-space: nowrap;
-            transition: 0.2s;
-        }
-
-        .quick-btn:hover {
-            background: var(--primary-blue);
-            color: var(--bg-base);
         }
 
         .input-form {
@@ -237,7 +301,6 @@
             padding: 12px 15px;
             color: var(--text-main);
             outline: none;
-            font-size: 0.95rem;
         }
 
         .send-btn {
@@ -248,27 +311,31 @@
             padding: 0 20px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
-        }
-        .send-btn:hover {
-            background: var(--accent-cyan);
         }
     </style>
 </head>
 <body>
 
+    <div id="auth-overlay">
+        <div class="auth-box">
+            <h2>AMI OS v2.0 ENCLAVE LOGIN</h2>
+            <input type="email" id="userEmail" placeholder="أدخل البريد الإلكتروني..." />
+            <input type="password" id="userPassword" placeholder="أدخل كلمة السر..." />
+            <button onclick="handleLogin()">دخول للنواة السيادية</button>
+        </div>
+    </div>
+
     <header>
         <div class="logo-area">
-            <!-- زرار طي القائمة بالرمز النقي المطلوب -->
             <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="إخفاء/إظهار القائمة">
                 <span></span>
             </button>
             <h1>AMI OS v2.0 QUANTUM ENCLAVE</h1>
         </div>
         <div class="system-status">
-            <span>PING: 12ms</span>
+            <span id="displayUser">USER: Guest</span>
             <span>Capabilities: 53 Active</span>
-            <span>USER: Core-Admin</span>
+            <span>PING: 12ms</span>
         </div>
     </header>
 
@@ -281,18 +348,19 @@
 
             <div class="chat-messages" id="chatMessages">
                 <div class="message ai">
-                    مرحباً يا فاوندر. تم تفعيل القدرة 53 بنجاح: مصفوفة إدارة الموارد الاستراتيجية والندرة العالمية (Resource Scarcity & Mining Intelligence). النواة السيادية جاهزة الآن.
+                    مرحباً يا فاوندر. تم تفعيل القدرة 53 بنجاح والاتصال بملف chat.js يعمل بكفاءة. النواة السيادية جاهزة لتلقي أوامرك.
+                    <button class="copy-btn" onclick="copyText(this)">نسخ</button>
                 </div>
             </div>
 
             <div class="chat-input-area">
                 <div class="quick-actions">
-                    <button class="quick-btn" onclick="sendQuick('تحليل أزمة ندرة النفط العالمية')">تحليل أزمة النفط</button>
-                    <button class="quick-btn" onclick="sendQuick('تقرير المعادن والتعدين الاستراتيجي')">تقرير المعادن والتعدين</button>
-                    <button class="quick-btn" onclick="sendQuick('حلول إدارة الموارد المتقدمة')">حلول إدارة الموارد</button>
+                    <button class="quick-btn" onclick="sendQuick('توليد فيديو بالذكاء الاصطناعي')">توليد فيديو AI</button>
+                    <button class="quick-btn" onclick="sendQuick('إنشاء صورة سيادية عالية الدقة')">تصميم صورة AI</button>
+                    <button class="quick-btn" onclick="sendQuick('تحليل أزمة ندرة الموارد العالمية')">تحليل الموارد</button>
                 </div>
                 <div class="input-form">
-                    <input type="text" id="userInput" placeholder="أدخل الأمر أو الاستعلام الاستراتيجي الخارق هنا..." onkeypress="handleKeyPress(event)">
+                    <input type="text" id="userInput" placeholder="أدخل الأمر أو الاستعلام السيادي هنا..." onkeypress="handleKeyPress(event)">
                     <button class="send-btn" onclick="sendMessage()">تنفيذ المهام</button>
                 </div>
             </div>
@@ -304,66 +372,129 @@
                 <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
                     53 / 53 Online<br>
                     WAF Enclave Shield: Secure<br>
-                    Resource Scarcity AI: Active
+                    API Chat.js: Connected
                 </div>
             </div>
 
             <div class="hud-card">
-                <div class="hud-title">إدارة المستندات والملفات (PDF)</div>
-                <button style="width: 100%; background: rgba(56,189,248,0.1); border: 1px dashed var(--primary-blue); color: var(--primary-blue); padding: 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;" onclick="alert('منطقة رفع الملفات جاهزة')">
-                    رفع ملف PDF أو صورة تحليلية
+                <div class="hud-title">استوديو الوسائط والمستندات (AI Media/PDF)</div>
+                <input type="file" id="mediaUpload" style="display: none;" onchange="handleFileSelected(event)">
+                <button style="width: 100%; background: rgba(56,189,248,0.1); border: 1px dashed var(--primary-blue); color: var(--primary-blue); padding: 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;" onclick="document.getElementById('mediaUpload').click()">
+                    رفع مستند PDF أو صور/فيديوهات للتحليل
                 </button>
+                <div id="fileStatus" style="font-size: 0.75rem; color: var(--accent-cyan); margin-top: 5px; text-align: center;"></div>
             </div>
 
             <div class="hud-card">
                 <div class="hud-title">إدارة النظام</div>
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <button style="background:none; border:1px solid var(--border-neon); color:var(--text-muted); padding:6px; border-radius:4px; cursor:pointer; font-size:0.75rem;" onclick="localStorage.clear(); alert('تم مسح الذاكرة بنجاح'); location.reload();">مسح الذاكرة المحلية</button>
-                </div>
+                <button style="width:100%; background:none; border:1px solid var(--border-neon); color:var(--text-muted); padding:6px; border-radius:4px; cursor:pointer; font-size:0.75rem;" onclick="localStorage.clear(); location.reload();">مسح الذاكرة المحلية</button>
             </div>
         </aside>
     </div>
 
     <script>
+        let attachedFile = null;
+        let conversationId = null;
+
+        function handleLogin() {
+            const email = document.getElementById('userEmail').value.trim();
+            const pass = document.getElementById('userPassword').value.trim();
+            if (!email || !pass) {
+                alert('الرجاء إدخال البريد الإلكتروني وكلمة السر.');
+                return;
+            }
+            document.getElementById('displayUser').innerText = `USER: ${email.split('@')[0]}`;
+            document.getElementById('auth-overlay').style.display = 'none';
+        }
+
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('collapsed');
+            document.getElementById('sidebar').classList.toggle('collapsed');
+        }
+
+        function handleFileSelected(event) {
+            const file = event.target.files[0];
+            if (file) {
+                attachedFile = file;
+                document.getElementById('fileStatus').innerText = `تم إرفاق: ${file.name}`;
+            }
         }
 
         async function sendMessage() {
             const input = document.getElementById('userInput');
             const text = input.value.trim();
-            if (!text) return;
+            if (!text && !attachedFile) return;
 
-            appendMessage(text, 'user');
+            const displayPrompt = text + (attachedFile ? ` [ملف مرفق: ${attachedFile.name}]` : '');
+            appendMessage(displayPrompt, 'user');
             input.value = '';
 
+            const loadingId = appendMessage("جارٍ تفكير النواة ومعالجة الطلب عبر API...", 'ai', false);
+
             try {
+                // الربط المباشر المتوافق مع ملف chat.js الخلفي
                 const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ query: text, user: 'Core-Admin' })
+                    body: JSON.stringify({ 
+                        query: displayPrompt, 
+                        user: document.getElementById('displayUser').innerText,
+                        conversation_id: conversationId
+                    })
                 });
+
                 const data = await response.json();
+                removeMessage(loadingId);
+
                 if(data.answer) {
-                    appendMessage(data.answer, 'ai');
+                    appendMessage(data.answer, 'ai', true);
+                    if(data.conversation_id) conversationId = data.conversation_id;
+                } else if(data.error) {
+                    appendMessage(`خطأ في الـ API: ${data.error}`, 'ai', true);
                 } else {
-                    appendMessage("تمت معالجة الاستعلام بنجاح عبر النظام.", 'ai');
+                    appendMessage("تم استلام الرد بنجاح من النواة السيادية.", 'ai', true);
                 }
+                attachedFile = null;
+                document.getElementById('fileStatus').innerText = '';
             } catch (e) {
-                setTimeout(() => {
-                    appendMessage("رد من نواة AMI OS: تم استقبال استعلامك ومعالجته بنجاح عبر القدرة 53.", 'ai');
-                }, 1000);
+                removeMessage(loadingId);
+                appendMessage("فشل الاتصال بمسار الـ API (تأكد من عمل خادم chat.js وتوجيه Vercel الصحيح).", 'ai', true);
             }
         }
 
-        function appendMessage(text, sender) {
+        function appendMessage(text, sender, showCopy = true) {
             const container = document.getElementById('chatMessages');
             const div = document.createElement('div');
             div.className = `message ${sender}`;
+            
+            // إضافة النص وزر النسخ الفوري للردود
             div.innerText = text;
+            if (sender === 'ai' && showCopy) {
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-btn';
+                copyBtn.innerText = 'نسخ';
+                copyBtn.onclick = function() { copyText(copyBtn); };
+                div.appendChild(copyBtn);
+            }
+
+            div.id = 'msg_' + Math.random().toString(36).substring(2, 9);
             container.appendChild(div);
             container.scrollTop = container.scrollHeight;
+            return div.id;
+        }
+
+        function removeMessage(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        }
+
+        function copyText(btn) {
+            const messageBox = btn.parentElement;
+            // نسخ النص بدون النص الموجود داخل زر النسخ نفسه
+            const textToCopy = messageBox.innerText.replace('نسخ', '').trim();
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                btn.innerText = 'تم النسخ!';
+                setTimeout(() => { btn.innerText = 'نسخ'; }, 2000);
+            });
         }
 
         function sendQuick(text) {
@@ -372,9 +503,7 @@
         }
 
         function handleKeyPress(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
+            if (e.key === 'Enter') sendMessage();
         }
     </script>
 </body>

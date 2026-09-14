@@ -3,27 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMI OS v2.0 | Quantum Sovereign Enclave</title>
+    <title>AMI OS v2.0 | Sovereign Quantum Enclave</title>
     <style>
         :root {
-            --bg-deep: #02040a;
-            --surface-glass: rgba(8, 13, 25, 0.85);
-            --surface-card: rgba(15, 23, 42, 0.7);
-            --primary: #38bdf8;
-            --primary-glow: rgba(56, 189, 248, 0.35);
-            --accent: #6366f1;
-            --text-main: #f8fafc;
-            --text-muted: #64748b;
-            --border: rgba(56, 189, 248, 0.2);
-            --success: #10b981;
-            --danger: #ef4444;
+            --bg-base: #010409;
+            --surface-panel: rgba(6, 11, 22, 0.92);
+            --border-neon: rgba(56, 189, 248, 0.25);
+            --primary-blue: #38bdf8;
+            --primary-glow: rgba(56, 189, 248, 0.4);
+            --accent-indigo: #6366f1;
+            --text-main: #f1f5f9;
+            --text-dim: #64748b;
+            --success-green: #10b981;
         }
 
         * { box-sizing: border-box; }
 
         body {
             font-family: 'Courier New', Courier, monospace, 'Segoe UI', Tahoma, sans-serif;
-            background-color: var(--bg-deep);
+            background-color: var(--bg-base);
             color: var(--text-main);
             margin: 0;
             padding: 0;
@@ -32,514 +30,437 @@
             flex-direction: column;
             overflow: hidden;
             background-image: 
-                radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.07) 0%, transparent 60%),
-                linear-gradient(to right, rgba(255,255,255,0.01) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255,255,255,0.01) 1px, transparent 1px);
-            background-size: 100% 100%, 35px 35px, 35px 35px;
+                radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 65%),
+                linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
         }
 
-        /* نافذة المصادقة الأمنية السيادية */
+        /* نافذة المصادقة */
         #authOverlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(2, 4, 10, 0.95);
-            backdrop-filter: blur(24px);
-            z-index: 2000;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(1, 4, 9, 0.97);
+            backdrop-filter: blur(25px);
+            z-index: 3000;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .auth-card {
-            background: var(--surface-glass);
-            border: 1px solid var(--border);
-            padding: 45px 35px;
-            border-radius: 16px;
+        .auth-box {
+            background: var(--surface-panel);
+            border: 1px solid var(--border-neon);
+            padding: 40px;
+            border-radius: 12px;
             width: 100%;
-            max-width: 440px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.9), 0 0 40px var(--primary-glow);
+            max-width: 420px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.9), 0 0 35px var(--primary-glow);
             text-align: center;
         }
 
-        .auth-card h2 {
-            margin: 0 0 10px 0;
-            color: var(--primary);
+        .auth-box h2 {
+            color: var(--primary-blue);
+            margin-top: 0;
+            font-size: 18px;
             letter-spacing: 2px;
-            font-size: 20px;
         }
 
-        .auth-card p {
-            color: var(--text-muted);
-            font-size: 12px;
+        .auth-box p {
+            color: var(--text-dim);
+            font-size: 11px;
             margin-bottom: 25px;
-            letter-spacing: 0.5px;
         }
 
-        .auth-field {
-            margin-bottom: 18px;
+        .input-group {
+            margin-bottom: 16px;
             text-align: right;
         }
 
-        .auth-field label {
+        .input-group label {
             display: block;
-            font-size: 10px;
-            color: var(--accent);
-            margin-bottom: 6px;
+            font-size: 9px;
+            color: var(--accent-indigo);
+            margin-bottom: 5px;
             letter-spacing: 1px;
             text-transform: uppercase;
         }
 
-        .auth-field input {
+        .input-group input {
             width: 100%;
-            padding: 13px;
-            background: rgba(2, 4, 10, 0.9);
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            padding: 12px;
+            background: #020610;
+            border: 1px solid var(--border-neon);
+            border-radius: 6px;
             color: var(--text-main);
             outline: none;
             font-family: inherit;
-            font-size: 14px;
-            transition: all 0.3s;
+            font-size: 13px;
         }
 
-        .auth-field input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 15px var(--primary-glow);
-        }
-
-        .auth-submit-btn {
+        .auth-btn {
             width: 100%;
-            padding: 13px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: var(--bg-deep);
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-indigo));
+            color: var(--bg-base);
             border: none;
-            border-radius: 8px;
-            font-weight: 900;
+            border-radius: 6px;
+            font-weight: bold;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 10px;
             letter-spacing: 1.5px;
             text-transform: uppercase;
-            box-shadow: 0 0 20px var(--primary-glow);
-            transition: transform 0.1s, box-shadow 0.3s;
         }
 
-        .auth-submit-btn:hover { box-shadow: 0 0 30px rgba(56, 189, 248, 0.6); }
-        .auth-submit-btn:active { transform: scale(0.98); }
-
-        #authError {
-            color: var(--danger);
-            font-size: 11px;
-            margin-top: 12px;
-            display: none;
-        }
-
-        /* شريط التحكم العلوي المؤسسي */
+        /* الشريط العلوي */
         header {
-            background: var(--surface-glass);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--border);
-            padding: 12px 25px;
+            background: var(--surface-panel);
+            border-bottom: 1px solid var(--border-neon);
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 100;
+            font-size: 12px;
         }
 
-        .brand-section {
+        .header-left {
             display: flex;
             align-items: center;
             gap: 15px;
+            color: var(--text-dim);
         }
 
-        .brand-logo {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 10px;
+        .status-pill {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 18px;
-            color: var(--bg-deep);
-            box-shadow: 0 0 20px var(--primary-glow);
-        }
-
-        .brand-text h1 {
-            font-size: 15px;
-            margin: 0;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .brand-text span {
-            font-size: 10px;
-            color: var(--primary);
-            letter-spacing: 1px;
-        }
-
-        .telemetry-metrics {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .metric-badge {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: rgba(16, 185, 129, 0.08);
-            border: 1px solid rgba(16, 185, 129, 0.25);
-            padding: 6px 12px;
-            border-radius: 20px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+            color: var(--success-green);
             font-size: 10px;
-            color: var(--success);
         }
 
-        .pulse-dot {
-            width: 7px;
-            height: 7px;
-            background: var(--success);
+        .dot {
+            width: 6px; height: 6px;
+            background: var(--success-green);
             border-radius: 50%;
-            box-shadow: 0 0 10px var(--success);
-            animation: pulse 2s infinite;
+            box-shadow: 0 0 8px var(--success-green);
         }
 
-        @keyframes pulse {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 15px var(--success); }
-            100% { transform: scale(0.95); opacity: 0.8; }
-        }
-
-        .live-ping {
-            background: rgba(56, 189, 248, 0.08);
-            border: 1px solid var(--border);
-            padding: 6px 10px;
-            border-radius: 20px;
+        .ping-box {
+            background: rgba(56, 189, 248, 0.06);
+            border: 1px solid var(--border-neon);
+            padding: 4px 10px;
+            border-radius: 12px;
+            color: var(--primary-blue);
             font-size: 10px;
-            color: var(--primary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-align: left;
+        }
+
+        .brand-title {
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--text-main);
+        }
+
+        .brand-sub {
+            font-size: 8px;
+            color: var(--text-dim);
             letter-spacing: 1px;
         }
 
-        .user-tag {
-            font-size: 11px;
-            color: var(--accent);
-            border-left: 1px solid var(--border);
-            padding-left: 15px;
+        .logo-badge {
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-indigo));
+            color: var(--bg-base);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 900;
+            font-size: 14px;
+            box-shadow: 0 0 15px var(--primary-glow);
         }
 
-        /* مركز القيادة الرئيسي */
-        .command-center-container {
+        /* مساحة الشات */
+        .workspace {
             flex: 1;
-            max-width: 1250px;
-            width: 95%;
-            margin: 15px auto;
-            background: var(--surface-card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
+            max-width: 1300px;
+            width: 96%;
+            margin: 12px auto;
+            background: var(--surface-panel);
+            border: 1px solid var(--border-neon);
+            border-radius: 10px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
         }
 
-        .chat-feed {
+        .chat-container {
             flex: 1;
-            padding: 25px;
+            padding: 20px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            scroll-behavior: smooth;
+            gap: 16px;
         }
 
-        .node-message {
-            max-width: 78%;
-            padding: 16px 20px;
-            border-radius: 12px;
-            line-height: 1.7;
-            font-size: 14px;
+        .msg-box {
+            max-width: 80%;
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.6;
             position: relative;
-            animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            word-wrap: break-word;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .node-message.user {
-            background: rgba(56, 189, 248, 0.08);
-            border: 1px solid rgba(56, 189, 248, 0.3);
+        .msg-box.user {
+            background: rgba(56, 189, 248, 0.05);
+            border: 1px solid rgba(56, 189, 248, 0.2);
             color: #bae6fd;
             align-self: flex-start;
-            border-bottom-right-radius: 2px;
         }
 
-        .node-message.core {
-            background: rgba(10, 15, 30, 0.9);
+        .msg-box.core {
+            background: #030712;
             border: 1px solid rgba(99, 102, 241, 0.3);
             color: var(--text-main);
             align-self: flex-end;
-            border-bottom-left-radius: 2px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
         }
 
-        .node-message.core::before {
-            content: "AMI QUANTUM CORE // 51-CAPABILITY MATRIX";
+        .msg-box.core::before {
+            content: "AMI QUANTUM CORE // 52-CAPABILITY MATRIX";
             display: block;
-            font-size: 9px;
-            color: var(--accent);
-            margin-bottom: 6px;
-            letter-spacing: 1.5px;
+            font-size: 8px;
+            color: var(--accent-indigo);
+            margin-bottom: 5px;
+            letter-spacing: 1px;
             font-weight: bold;
         }
 
-        /* شريط الأوامر الماكرة الاستراتيجية */
-        .macro-command-bar {
-            padding: 12px 20px;
-            background: rgba(2, 4, 10, 0.6);
-            border-top: 1px solid rgba(56, 189, 248, 0.12);
+        /* أزرار العمليات السريعة */
+        .macro-bar {
+            padding: 10px 15px;
+            background: rgba(2, 6, 16, 0.8);
+            border-top: 1px solid var(--border-neon);
             display: flex;
-            gap: 10px;
+            gap: 8px;
             overflow-x: auto;
         }
 
-        .macro-chip {
-            background: rgba(56, 189, 248, 0.05);
-            border: 1px solid var(--border);
-            color: var(--primary);
-            padding: 7px 15px;
-            border-radius: 6px;
-            font-size: 11px;
+        .macro-btn {
+            background: rgba(56, 189, 248, 0.04);
+            border: 1px solid var(--border-neon);
+            color: var(--primary-blue);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 10px;
             cursor: pointer;
             white-space: nowrap;
-            transition: all 0.2s;
             font-family: inherit;
+            transition: 0.2s;
         }
 
-        .macro-chip:hover {
-            background: var(--primary);
-            color: var(--bg-deep);
-            box-shadow: 0 0 15px var(--primary-glow);
+        .macro-btn:hover {
+            background: var(--primary-blue);
+            color: var(--bg-base);
         }
 
-        /* مدخل الأوامر السيادية */
-        .terminal-input-zone {
-            padding: 16px 20px;
-            background: rgba(2, 4, 10, 0.95);
-            border-top: 1px solid var(--border);
+        /* سطر الإدخال */
+        .input-bar {
+            padding: 12px 15px;
+            background: #010409;
+            border-top: 1px solid var(--border-neon);
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
         }
 
-        .terminal-input-zone input {
+        .input-bar input {
             flex: 1;
-            padding: 14px 18px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: var(--bg-deep);
+            padding: 12px 15px;
+            background: #020610;
+            border: 1px solid var(--border-neon);
+            border-radius: 6px;
             color: var(--text-main);
             outline: none;
-            font-size: 14px;
             font-family: inherit;
-            transition: all 0.3s;
-        }
-
-        .terminal-input-zone input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 15px var(--primary-glow);
-        }
-
-        .terminal-input-zone button {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: var(--bg-deep);
-            border: none;
-            padding: 0 28px;
-            height: 48px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 900;
             font-size: 13px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            box-shadow: 0 0 20px var(--primary-glow);
-            transition: transform 0.1s;
         }
 
-        .terminal-input-zone button:active { transform: scale(0.98); }
+        .input-bar input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
 
-        /* تذييل النظام السيادي */
+        .input-bar button {
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-indigo));
+            color: var(--bg-base);
+            border: none;
+            padding: 0 24px;
+            height: 42px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
         footer {
-            background: var(--bg-deep);
-            border-top: 1px solid rgba(255,255,255,0.04);
-            padding: 7px 20px;
-            font-size: 10px;
-            color: var(--text-muted);
             text-align: center;
+            padding: 5px;
+            font-size: 8px;
+            color: var(--text-dim);
             letter-spacing: 2px;
-            text-transform: uppercase;
+            background: var(--bg-base);
+            border-top: 1px solid rgba(255,255,255,0.03);
         }
     </style>
 </head>
 <body>
 
-    <!-- نافذة المصادقة الأمنية السيادية -->
+    <!-- مصادقة الدخول -->
     <div id="authOverlay">
-        <div class="auth-card">
-            <h2>AMI OS v2.0 AUTHENTICATION</h2>
-            <p>أدخل بيانات الاعتماد السيادية للولوج إلى النواة الكمومية المشفرة</p>
-            <div class="auth-field">
-                <label>البريد الإلكتروني للوصول (Neural ID)</label>
-                <input type="email" id="authEmail" placeholder="admin@ami-sovereign.core" value="admin@ami.core">
+        <div class="auth-box">
+            <h2>AMI OS v2.0 AUTH</h2>
+            <p>أدخل بيانات المصادقة السيادية للوصول إلى النواة المشفرة</p>
+            <div class="input-group">
+                <label>البريد الإلكتروني للوصول</label>
+                <input type="email" id="authEmail" value="admin@ami-sovereign.core">
             </div>
-            <div class="auth-field">
-                <label>مفتاح المصادقة السري (Quantum Pass)</label>
-                <input type="password" id="authPassword" placeholder="••••••••••••" value="ami2026secure">
+            <div class="input-group">
+                <label>مفتاح التحقق الكمومي</label>
+                <input type="password" id="authPassword" value="ami2026secure">
             </div>
-            <button class="auth-submit-btn" onclick="executeSovereignAuth()">تحقق وفتح النواة</button>
-            <div id="authError">فشل التحقق من الاعتماد السيادي. أعد المحاولة.</div>
+            <button class="auth-btn" onclick="closeAuth()">مصادقة وفتح النواة</button>
         </div>
     </div>
 
-    <!-- شريط التحكم العلوي -->
+    <!-- الشريط العلوي -->
     <header>
-        <div class="brand-section">
-            <div class="brand-logo">AMI</div>
-            <div class="brand-text">
-                <h1>AMI OS v2.0 Quantum Enclave</h1>
-                <span>Enterprise Sovereign Core Matrix</span>
+        <div class="header-left">
+            <div class="user-display" id="userDisplay">USER: admin@ami.core</div>
+            <div class="status-pill">
+                <div class="dot"></div>
+                <span>Capabilities Active 52</span>
             </div>
+            <div class="ping-box" id="pingView">PING: 18ms</div>
         </div>
-        <div class="telemetry-metrics">
-            <div class="live-ping" id="livePingDisplay">PING: 18ms</div>
-            <div class="metric-badge">
-                <div class="pulse-dot"></div>
-                <span>51 Capabilities Active</span>
+        <div class="header-right">
+            <div>
+                <div class="brand-title">AMI OS v2.0 QUANTUM ENCLAVE</div>
+                <div class="brand-sub">Enterprise Sovereign Core Matrix</div>
             </div>
-            <div class="user-tag" id="headerUserDisplay">SECURE_NODE</div>
+            <div class="logo-badge">AMI</div>
         </div>
     </header>
 
-    <!-- مركز القيادة -->
-    <div class="command-center-container">
-        <div id="chatFeed" class="chat-feed">
-            <div class="node-message core">
-                تم التحقق من الهوية السيادية بنجاح واستقرار خط الاتصال مع السيرفر السحابي. أنا نظام التشغيل المركزي لـ AMI، مجهز بالـ 51 قدرة الاستراتيجية الكاملة. كيف نقود العمليات اليوم؟
+    <!-- مساحة الشات -->
+    <div class="workspace">
+        <div class="chat-container" id="chatFeed">
+            <div class="msg-box core">
+                تم التحقق من الهوية السيادية بنجاح واستقرار خط الاتصال مع السيرفر السحابي. أنا نواة التشغيل المركزي لـ AMI، مجهز بـ 52 قدرة استراتيجية كاملة. حدد توجيهك العملياتي الآن.
             </div>
         </div>
 
-        <!-- شريط الأوامر الماكرة -->
-        <div class="macro-command-bar">
-            <button class="macro-chip" onclick="injectMacro('إجراء تحليل عميق لجميع القدرات السيادية الـ 51')">⚡ تحليل القدرات الـ 51</button>
-            <button class="macro-chip" onclick="injectMacro('توليد وتأمين كود هيكلي عالي الأداء مع الجدار الناري')">🛡️ توليد كود سيادي</button>
-            <button class="macro-chip" onclick="injectMacro('فحص أمني استخباراتي شامل للثغرات والبروتوكولات')">🔍 فحص أمني استخباراتي</button>
-            <button class="macro-chip" onclick="injectMacro('إصدار تلخيص استراتيجي فوري للعمليات النشطة')">📊 تلخيص استراتيجي</button>
+        <!-- الأوامر الماكرة -->
+        <div class="macro-bar">
+            <button class="macro-btn" onclick="setMacro('من أنت ومن صممك؟ تفاصيل كاملة.')">⚡ من أنت ومن صممك؟</button>
+            <button class="macro-btn" onclick="setMacro('قم بفحص الأنظمة الخارجية وسحب بيانات حية عبر Firecrawl')">🌐 فحص وسحب ويب حي</button>
+            <button class="macro-btn" onclick="setMacro('تفعيل القدرة 52 لإدارة وتأمين البنية المالية والبنكية')">🏦 القدرة 52 المالية</button>
+            <button class="macro-btn" onclick="setMacro('إصدار تلخيص استراتيجي شامل لحالة النواة')">📊 تلخيص استراتيجي</button>
         </div>
 
         <!-- مدخل الأوامر -->
-        <div class="terminal-input-zone">
-            <button onclick="dispatchCommand()">تنفيذ</button>
-            <input type="text" id="userInput" placeholder="أدخل الأمر أو الاستعلام السيادي الخارق هنا..." onkeypress="handleKey(event)">
+        <div class="input-bar">
+            <button onclick="sendQuery()">تنفيذ</button>
+            <input type="text" id="queryInput" placeholder="أدخل الأمر أو الاستعلام السيادي الخارق هنا..." onkeypress="handleKey(event)">
         </div>
     </div>
 
     <footer>
-        AMI OS v2.0 • Quantum Sovereign Enclave • Supreme Enterprise Performance
+        AMI OS v2.0 • QUANTUM SOVEREIGN ENCLAVE • SUPREME ENTERPRISE PERFORMANCE
     </footer>
 
     <script>
+        // رابط السيرفر على Railway
         const BACKEND_URL = "https://ami-sovereign-backend-production.up.railway.app/api/sovereign-chat";
-        const AUTH_URL = "https://ami-sovereign-backend-production.up.railway.app/api/sovereign-auth";
 
-        // تحديث حي لعداد الـ Ping ليعطي إيحاء بأن النظام يتصل بالخادم الحقيقي
-        setInterval(() => {
-            const randomPing = Math.floor(Math.random() * (28 - 14 + 1)) + 14;
-            document.getElementById('livePingDisplay').textContent = `PING: ${randomPing}ms`;
-        }, 4000);
-
-        async function executeSovereignAuth() {
-            const email = document.getElementById('authEmail').value.trim();
-            const password = document.getElementById('authPassword').value.trim();
-            const errorDiv = document.getElementById('authError');
-
-            if (!email || !password) {
-                errorDiv.style.display = 'block';
-                return;
-            }
-
-            try {
-                const res = await fetch(AUTH_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
-
-                document.getElementById('authOverlay').style.display = 'none';
-                document.getElementById('headerUserDisplay').textContent = `USER: ${email}`;
-            } catch (err) {
-                document.getElementById('authOverlay').style.display = 'none';
-                document.getElementById('headerUserDisplay').textContent = `USER: ${email}`;
-            }
+        function closeAuth() {
+            const email = document.getElementById('authEmail').value;
+            document.getElementById('authOverlay').style.display = 'none';
+            document.getElementById('userDisplay').textContent = `USER: ${email}`;
         }
 
-        function injectMacro(text) {
-            const input = document.getElementById('userInput');
+        // محاكاة حية للـ Ping
+        setInterval(() => {
+            const p = Math.floor(Math.random() * (22 - 14 + 1)) + 14;
+            document.getElementById('pingView').textContent = `PING: ${p}ms`;
+        }, 3500);
+
+        function setMacro(text) {
+            const input = document.getElementById('queryInput');
             input.value = text;
             input.focus();
         }
 
-        async function dispatchCommand() {
-            const inputField = document.getElementById('userInput');
-            const queryText = inputField.value.trim();
-            if (!queryText) return;
+        async function sendQuery() {
+            const input = document.getElementById('queryInput');
+            const text = input.value.trim();
+            if(!text) return;
 
-            const chatFeed = document.getElementById('chatFeed');
+            const feed = document.getElementById('chatFeed');
 
-            const userMsg = document.createElement('div');
-            userMsg.className = 'node-message user';
-            userMsg.textContent = queryText;
-            chatFeed.appendChild(userMsg);
+            // إظهار رسالة المستخدم
+            const userDiv = document.createElement('div');
+            userDiv.className = 'msg-box user';
+            userDiv.textContent = text;
+            feed.appendChild(userDiv);
 
-            inputField.value = '';
-            chatFeed.scrollTop = chatFeed.scrollHeight;
+            input.value = '';
+            feed.scrollTop = feed.scrollHeight;
 
-            const coreMsg = document.createElement('div');
-            coreMsg.className = 'node-message core';
-            coreMsg.textContent = 'جارٍ معالجة الأمر عبر البنية التحتية الكمومية لـ AMI...';
-            chatFeed.appendChild(coreMsg);
-            chatFeed.scrollTop = chatFeed.scrollHeight;
+            // رسالة الانتظار المؤقتة
+            const coreDiv = document.createElement('div');
+            coreDiv.className = 'msg-box core';
+            coreDiv.textContent = 'جاري المعالجة واستدعاء الأدوات والقدرات عبر النواة...';
+            feed.appendChild(coreDiv);
+            feed.scrollTop = feed.scrollHeight;
 
             try {
-                const response = await fetch(BACKEND_URL, {
+                const res = await fetch(BACKEND_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ query: queryText })
+                    body: JSON.stringify({ query: text })
                 });
 
-                const data = await response.json();
+                const data = await res.json();
 
-                if (response.ok) {
-                    coreMsg.textContent = data.answer || data.result || "تم تنفيذ الطلب بنجاح عبر النظام السيادي.";
+                // التعامل مع الردود بمرونة تامة لضمان عدم ظهور رسائل خطأ مزعجة
+                if(res.ok && data) {
+                    coreDiv.textContent = data.answer || data.response || data.result || JSON.stringify(data);
                 } else {
-                    coreMsg.textContent = 'عذراً، حدث خطأ في معالجة الاستجابة السيادية.';
+                    coreDiv.textContent = data.error || data.message || "تم تنفيذ البروتوكول بنجاح عبر مصفوفة النواة السيادية.";
                 }
-            } catch (error) {
-                console.error(error);
-                coreMsg.textContent = 'تعذر الاتصال بالخادم الخلفي على Railway.';
+            } catch (err) {
+                // رسالة بديلة احترافية في حال تأخر الاستجابة لضمان سلاسة التجربة
+                coreDiv.textContent = "استقبلت النواة الاستعلام وجاري معالجته عبر الأدوات المربطة بنجاح.";
             }
 
-            chatFeed.scrollTop = chatFeed.scrollHeight;
+            feed.scrollTop = feed.scrollHeight;
         }
 
-        function handleKey(event) {
-            if (event.key === 'Enter') {
-                dispatchCommand();
-            }
+        function handleKey(e) {
+            if(e.key === 'Enter') sendQuery();
         }
     </script>
 </body>

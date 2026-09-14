@@ -8,7 +8,6 @@ export default async function handler(req, res) {
     const clientIP = req.headers['x-forwarded-for'] || 'secure-client';
     const currentTime = Date.now();
     
-    // WAF Rate Limiting المحلي لحماية السيرفر من السبام
     if (!requestTracker.has(clientIP)) {
         requestTracker.set(clientIP, { count: 1, startTime: currentTime });
     } else {
@@ -23,11 +22,11 @@ export default async function handler(req, res) {
         }
     }
 
-    const { query, user, hashToken } = req.body;
+    const { query, user, hashToken, conversation_id } = req.body;
     const apiKey = process.env.DIFY_API_KEY;
 
     if (!apiKey) {
-        return res.status(500).json({ error: 'Critical Error: DIFY_API_KEY not configured in environment variables.' });
+        return res.status(500).json({ error: 'Critical Error: DIFY_API_KEY not configured.' });
     }
 
     if (!hashToken) {
@@ -37,24 +36,28 @@ export default async function handler(req, res) {
     const sanitizedQuery = typeof query === 'string' ? query.slice(0, 5000) : '';
 
     try {
-        // إرسال الطلب لمسار الـ Chat-Messages للتعامل مع الـ Chatflow وتفعيل الأدوات
+        const payload = {
+            inputs: {}, // لو عندك متغيرات بداية في الـ Start Node ممكن نحطها هنا
+            query: sanitizedQuery,
+            response_mode: "blocking",
+            user: user || "Secure-Client"
+        };
+
+        // لو فيه محادثة قائمة، بنبعت الـ ID بتاعها عشان السياق ميتفقدش
+        if (conversation_id) {
+            payload.conversation_id = conversation_id;
+        }
+
         const dResponse = await fetch('https://api.dify.ai/v1/chat-messages', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${apiKey}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                inputs: {},
-                query: sanitizedQuery,
-                response_mode: "blocking",
-                user: user || "Secure-Client"
-            })
+            body: JSON.stringify(payload)
         });
 
         const data = await dResponse.json();
-        
-        // إرجاع الرد الحقيقي القادم من النواة للواجهة
         return res.status(200).json(data);
     } catch (error) {
         return res.status(500).json({ error: 'Secure enclave communication error with AI core.' });

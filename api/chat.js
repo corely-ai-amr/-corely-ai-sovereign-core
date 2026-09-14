@@ -19,7 +19,7 @@ export default async function handler(req, res) {
             }
             tracker.count++;
         } else {
-            tracker.set(clientIP, { count: 1, startTime: currentTime });
+            requestTracker.set(clientIP, { count: 1, startTime: currentTime });
         }
     }
 
@@ -27,7 +27,7 @@ export default async function handler(req, res) {
     const apiKey = process.env.DIFY_API_KEY;
 
     if (!apiKey) {
-        return res.status(500).json({ error: 'Critical Error: DIFY_API_KEY not configured in Vercel environment variables.' });
+        return res.status(500).json({ error: 'Critical Error: DIFY_API_KEY not configured in environment variables.' });
     }
 
     if (!hashToken) {
@@ -37,7 +37,7 @@ export default async function handler(req, res) {
     const sanitizedQuery = typeof query === 'string' ? query.slice(0, 5000) : '';
 
     try {
-        const dResponse = await fetch('https://api.dify.ai/v1/chat-messages', {
+        const dResponse = await fetch('https://api.dify.ai/v1/workflows/run', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${apiKey}`,
@@ -53,7 +53,7 @@ export default async function handler(req, res) {
 
         const data = await dResponse.json();
         
-        // إرجاع الرد الحقيقي القادم من Dify بنجاح
+        // إرجاع الرد الحقيقي القادم من Dify Chatflow بنجاح
         return res.status(200).json(data);
     } catch (error) {
         return res.status(500).json({ error: 'Secure enclave communication error with AI core.' });

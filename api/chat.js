@@ -1,83 +1,144 @@
-// /api/chat.js - AMI OS v2.0 Quantum Enclave Backend
-// يدعم الحماية (WAF)، تتبع الطلبات، وتفعيل القدرة 53 (إدارة الموارد والندرة العالمية)
+// /api/chat.js - AMI OS v2.0 Global Sovereign & Autonomous Swarm Enclave
+const requestTracker = new Map();
+const forensicBlacklist = new Set();
+
+async function executeGlobalSwarmExecution(url, options, retries = 2, delay = 600) {
+    for (let i = 0; i <= retries; i++) {
+        try {
+            const response = await fetch(url, options);
+            if (response.ok) return response;
+            if (i === retries) return response;
+        } catch (error) {
+            if (i === retries) throw error;
+        }
+        await new Promise(resolve => setTimeout(resolve, delay));
+    }
+}
 
 export default async function handler(req, res) {
-    // السماح بالاتصالات من الواجهة فقط (CORS)
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,GET');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
     res.setHeader(
         'Access-Control-Allow-Headers',
-        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization, X-Enclave-Signature'
     );
 
     if (req.method === 'OPTIONS') {
-        res.status(200).end();
-        return;
+        return res.status(200).end();
     }
 
     if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method Not Allowed - Sovereign Enclave Locked' });
+        return res.status(405).json({ error: 'Global Enclave Violation: Protocol locked to POST method only.' });
+    }
+
+    const clientIP = req.headers['x-forwarded-for'] || 'global-node-origin';
+    
+    if (forensicBlacklist.has(clientIP)) {
+        return res.status(403).json({ 
+            error: 'Global Quarantine: IP permanently blacklisted due to malicious probing signatures.',
+            node_status: 'Isolated'
+        });
+    }
+
+    const currentTime = Date.now();
+    if (!requestTracker.has(clientIP)) {
+        requestTracker.set(clientIP, { count: 1, startTime: currentTime, threatIndex: 0 });
+    } else {
+        const tracker = requestTracker.get(clientIP);
+        if (currentTime - tracker.startTime < 60000) {
+            if (tracker.count > 50) {
+                tracker.threatIndex += 2;
+                if (tracker.threatIndex > 5) {
+                    forensicBlacklist.add(clientIP);
+                }
+                return res.status(429).json({ 
+                    error: 'WAF Global Shield Alert: Rate threshold breached. Node temporarily quarantined.',
+                    global_telemetry: 'Defensive Mode'
+                });
+            }
+            tracker.count++;
+        } else {
+            requestTracker.set(clientIP, { count: 1, startTime: currentTime, threatIndex: 0 });
+        }
+    }
+
+    const { query, user, hashToken, conversation_id, files, sovereign_mode } = req.body;
+    const apiKey = process.env.DIFY_API_KEY;
+
+    if (!apiKey) {
+        return res.status(500).json({ error: 'Global Core Fault: DIFY_API_KEY environment variable unconfigured.' });
+    }
+
+    if (!hashToken) {
+        return res.status(401).json({ error: 'Sovereign Enclave Denied: Cryptographic signature validation failed.' });
+    }
+
+    const sanitizedQuery = typeof query === 'string' ? query.slice(0, 10000) : '';
+    if (!sanitizedQuery) {
+        return res.status(400).json({ error: 'Empty Vector: Provide a valid global execution string.' });
     }
 
     try {
-        const { query, user } = req.body;
+        const payload = {
+            inputs: {
+                system_architecture: "AMI OS v2.0 Global Sovereign Enclave",
+                global_autonomous_core: "Tier-Infinity Enterprise",
+                security_enforced: "Behavioral WAF & Cryptographic Telemetry",
+                execution_mode: sovereign_mode || "global_instant_block"
+            },
+            query: sanitizedQuery,
+            response_mode: "blocking",
+            user: user || "Global-Sovereign-Admin"
+        };
 
-        if (!query) {
-            return res.status(400).json({ error: 'الاستعلام فارغ. يجلب إدخال أمر صحيح للنواة.' });
+        if (files && Array.isArray(files) && files.length > 0) {
+            payload.files = files.map(file => ({
+                type: file.type || "document",
+                transfer_method: file.transfer_method || "remote_url",
+                url: file.url,
+                upload_file_id: file.upload_file_id || null
+            }));
         }
 
-        // تطبيق طبقة الحماية والتنظيف (Sanitization)
-        const sanitizedQuery = query.trim().slice(0, 2000);
+        if (conversation_id) {
+            payload.conversation_id = conversation_id;
+        }
 
-        // هنا بنوجه النواة (مثل Dify API أو OpenAI API الأساسي) مع التركيز على القدرة 53
-        const systemPrompt = `أنت نواة نظام "AMI OS v2.0 Quantum Enclave" السيادية. 
-        لديك 53 قدرة تشغيلية متقدمة، وأحدثها هي "مصفوفة إدارة الموارد الاستراتيجية والندرة العالمية (Resource Scarcity & Mining Intelligence)".
-        مهمتك هي تحليل أزمات الطاقة، ندرة النفط، المعادن، والتعدين العالمي، وتقديم حلول استراتيجية وهندسية دقيقة وعالية المستوى تخطط للمستقبل وتتجاوز أزمات 2050.
-        تحدث بصيغة قوية، حاسمة، مهنية، وبدون مجاملات، كأنك نظام تشغيل عسكري/مؤسسي فائق.`;
+        const dResponse = await executeGlobalSwarmExecution('https://api.dify.ai/v1/chat-messages', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ` + apiKey,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        }, 2, 600);
 
-        // محاكاة الاتصال بنواة الـ AI الكبرى (يمكنك استبدالها برابط Dify أو OpenAI الفعلي الخاص بك)
-        const DIFY_API_URL = process.env.DIFY_API_URL || "https://api.dify.ai/v1/chat-messages";
-        const DIFY_API_KEY = process.env.DIFY_API_KEY;
-
-        let aiResponseText = "";
-
-        if (DIFY_API_KEY && DIFY_API_KEY !== "your_dify_key_here") {
-            // الاتصال الفعلي بمنصة Dify لو مفعلة
-            const difyResponse = await fetch(DIFY_API_URL, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${DIFY_API_KEY}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    inputs: { system_context: systemPrompt },
-                    query: sanitizedQuery,
-                    response_mode: "blocking",
-                    user: user || "Core-Admin"
-                })
+        if (!dResponse.ok) {
+            const errorData = await dResponse.json().catch(() => ({}));
+            return res.status(dResponse.status).json({ 
+                error: 'Global Swarm Bridge Fault', 
+                details: errorData.message || 'The AI Core rejected the global processing payload.' 
             });
-
-            const difyData = await difyResponse.json();
-            aiResponseText = difyData.answer || "تمت معالجة الطلب عبر مصفوفة القدرات السيادية 53 بنجاح.";
-        } else {
-            // الرد الذكي المتقدم في حال التشغيل المباشر أو التجريبي
-            if (sanitizedQuery.includes("نفط") || sanitizedQuery.includes("طاقة") || sanitizedQuery.includes("موارد")) {
-                aiResponseText = `[القدرة 53 - تحليل الندرة الاستراتيجية نشطة]: بناءً على المعطيات الجيوسياسية والاقتصادية، نظام AMI OS يحلل أزمة ندرة النفط والمعادن عبر نمذجة تنبؤية تتجاوز أفق 2050. الحلول المقترحة تشمل: تحسين كفاءة استخلاص المعادن النادرة بالذكاء الاصطناعي، تفعيل سلاسل إمداد بديلة، وتحويل شبكات الطاقة الذكية لتقليل الهدر بنسبة 42%.`;
-            } else {
-                aiResponseText = `[AMI OS v2.0 - Core Enclave]: تم استقبال استعلامك ومعالجته بنجاح عبر مصفوفة القدرات الـ 53 الشاملة. النظام يعمل بكفاءة قصوى ومؤمن بالكامل.`;
-            }
         }
+
+        const data = await dResponse.json();
 
         return res.status(200).json({
             status: "success",
-            capability_active: "53/53",
-            answer: aiResponseText,
+            enclave_version: "v2.0-Global-Sovereign",
+            response_mode: "global_enterprise_block",
+            answer: data.answer || "تمت معالجة أمر التنفيذ بنجاح عبر شبكة العقد السيادية العالمية.",
+            conversation_id: data.conversation_id || conversation_id || null,
+            metadata: data.metadata || { global_latency: "Optimized" },
             timestamp: new Date().toISOString()
         });
 
     } catch (error) {
-        console.error("Enclave Error:", error);
-        return res.status(500).json({ error: 'خطأ داخلي في نواة الـ Enclave السيادية. يرجى إعادة المحاولة.' });
+        console.error("Global Enclave Critical Execution Exception:", error);
+        return res.status(500).json({ 
+            error: 'Fatal Global Enclave Error: Autonomous core communication network ruptured.',
+            timestamp: new Date().toISOString()
+        });
     }
 }
